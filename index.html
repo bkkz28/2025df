@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制造业数字化转型评价系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sky-blue: #1e88e5;
+            --sky-light: #64b5f6;
+            --sky-dark: #0d47a1;
+            --cloud-white: #f5f7fa;
+            --sun-yellow: #ffd54f;
+            --horizon-orange: #ff8a65;
+            --accent-teal: #26c6da;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--sky-blue) 0%, var(--sky-light) 50%, var(--sky-dark) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 云朵背景效果 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 20%),
+                radial-gradient(circle at 90% 30%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 20%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 20%);
+            z-index: -1;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--sky-blue), var(--accent-teal));
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 15px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+        }
+        
+        .indicator-tabs {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .nav-tabs {
+            border-bottom: 2px solid rgba(30, 136, 229, 0.2);
+            padding: 0 10px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: var(--sky-dark);
+            border-radius: 10px 10px 0 0;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-tabs .nav-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .nav-tabs .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--sky-blue), var(--accent-teal));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.3);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            border: none;
+            background-color: rgba(30, 136, 229, 0.1);
+        }
+        
+        .indicator-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease;
+        }
+        
+        .indicator-item:hover {
+            background-color: rgba(100, 181, 246, 0.05);
+        }
+        
+        .indicator-item:last-child {
+            border-bottom: none;
+        }
+        
+        .level-indicator {
+            display: flex;
+            margin: 15px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+        }
+        
+        .level {
+            flex: 1;
+            text-align: center;
+            padding: 12px 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .level:hover {
+            transform: scale(1.05);
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .level::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+        }
+        
+        .level-0 { background: linear-gradient(135deg, #78909c, #546e7a); }
+        .level-1 { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
+        .level-2 { background: linear-gradient(135deg, #66bb6a, #43a047); }
+        .level-3 { background: linear-gradient(135deg, #ffa726, #fb8c00); }
+        .level-4 { background: linear-gradient(135deg, #ff7043, #f4511e); }
+        .level-5 { background: linear-gradient(135deg, #ef5350, #e53935); }
+        
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin: 10px 0;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+        
+        .progress {
+            height: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.5);
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: width 0.5s ease;
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        
+        .result-summary {
+            text-align: center;
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--sky-blue), var(--accent-teal));
+            color: white;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-summary::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 8s infinite linear;
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .level-description {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--accent-teal);
+        }
+        
+        .slider-container {
+            padding: 10px 0;
+        }
+        
+        .form-range {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+        }
+        
+        .form-range::-webkit-slider-thumb {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sky-blue), var(--accent-teal));
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid white;
+            transition: all 0.2s ease;
+        }
+        
+        .form-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-weight: bold;
+            color: var(--sky-blue);
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            border-left: 5px solid var(--sky-blue);
+            padding-left: 15px;
+            margin: 25px 0 15px;
+            font-weight: 700;
+            color: var(--sky-dark);
+            background: rgba(255,255,255,0.5);
+            padding: 10px 15px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #ef5350, #e53935);
+            border: none;
+            padding: 12px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-reset::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-reset:hover::before {
+            left: 100%;
+        }
+        
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(229, 57, 53, 0.4);
+        }
+        
+        .indicator-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .current-level {
+            font-weight: bold;
+            text-align: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .subcategory {
+            background: linear-gradient(135deg, rgba(30, 136, 229, 0.1), rgba(38, 198, 218, 0.1));
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid var(--sky-blue);
+        }
+        
+        .primary-indicator {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255,255,255,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .primary-indicator::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--sky-blue), var(--accent-teal));
+            transition: width 0.3s ease;
+        }
+        
+        .primary-indicator:hover::before {
+            width: 8px;
+        }
+        
+        .primary-indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(5px);
+        }
+        
+        .secondary-scores {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            border-left: 3px solid var(--accent-teal);
+        }
+        
+        .secondary-score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease;
+        }
+        
+        .secondary-score-item:hover {
+            background-color: rgba(100, 181, 246, 0.1);
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        
+        .secondary-score-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 飞行元素装饰 */
+        .flying-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .plane {
+            top: 10%;
+            right: 5%;
+            font-size: 2rem;
+            color: white;
+            animation: fly 20s linear infinite;
+        }
+        
+        .cloud {
+            top: 20%;
+            left: 5%;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.8);
+            animation: float 25s linear infinite;
+        }
+        
+        .bird {
+            bottom: 20%;
+            right: 10%;
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.6);
+            animation: flyBird 15s linear infinite;
+        }
+        
+        @keyframes fly {
+            0% { transform: translateX(100px) rotate(0deg); }
+            100% { transform: translateX(-100vw) rotate(5deg); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(50px) translateY(10px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+        
+        @keyframes flyBird {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-50px) translateY(-10px); }
+            50% { transform: translateX(-100px) translateY(0); }
+            75% { transform: translateX(-50px) translateY(10px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+        
+        .total-grade {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin: 10px 0;
+            padding: 8px 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .export-btn {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .score-display {
+                font-size: 2rem;
+            }
+            
+            .flying-element {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 飞行元素装饰 -->
+    <div class="flying-element plane">
+        <i class="fas fa-plane"></i>
+    </div>
+    <div class="flying-element cloud">
+        <i class="fas fa-cloud"></i>
+    </div>
+    <div class="flying-element bird">
+        <i class="fas fa-dove"></i>
+    </div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-rocket me-2"></i>
+                <strong>制造业数字化转型评价系统</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#instructionsModal"><i class="fas fa-info-circle me-1"></i> 使用说明</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="export-link"><i class="fas fa-download me-1"></i> 导出结果</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-container">
+            <div class="row p-4">
+                <!-- 左侧：指标评价区域 -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>企业智能化改造数字化转型评价</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- 等级指示器 -->
+                            <div class="level-indicator">
+                                <div class="level level-0">L0<br>尚未实施<br>[0-10)</div>
+                                <div class="level level-1">L1<br>起步建设<br>[10-20)</div>
+                                <div class="level level-2">L2<br>单项应用<br>[20-40)</div>
+                                <div class="level level-3">L3<br>综合集成<br>[40-60)</div>
+                                <div class="level level-4">L4<br>协同优化<br>[60-80)</div>
+                                <div class="level level-5">L5<br>智能引领<br>[80-105]</div>
+                            </div>
+                            
+                            <!-- 指标选项卡 -->
+                            <div class="indicator-tabs">
+                                <ul class="nav nav-tabs" id="indicatorTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="foundation-tab" data-bs-toggle="tab" data-bs-target="#foundation" type="button" role="tab">
+                                            <i class="fas fa-microchip me-1"></i> 数字化基础
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="operation-tab" data-bs-toggle="tab" data-bs-target="#operation" type="button" role="tab">
+                                            <i class="fas fa-cogs me-1"></i> 数字化生产经营
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="management-tab" data-bs-toggle="tab" data-bs-target="#management" type="button" role="tab">
+                                            <i class="fas fa-users me-1"></i> 数字化管理
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab">
+                                            <i class="fas fa-trophy me-1"></i> 数字化成效
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="bonus-tab" data-bs-toggle="tab" data-bs-target="#bonus" type="button" role="tab">
+                                            <i class="fas fa-star me-1"></i> 加分项
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3" id="indicatorTabsContent">
+                                    <!-- 数字化基础 -->
+                                    <div class="tab-pane fade show active" id="foundation" role="tabpanel">
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-server me-2"></i>设备系统 (50%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化生产设备普及率 (35%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="device-popularization">
+                                                <div class="slider-value" id="device-popularization-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业直接部署的数字化生产设备或完成数字化改造的生产设备占所有生产设备的比重
+                                            </div>
+                                            <div class="current-level level-0" id="device-popularization-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化生产设备联网率 (25%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="device-networking">
+                                                <div class="slider-value" id="device-networking-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业已联网的数字化生产设备占所有数字化生产设备的比重
+                                            </div>
+                                            <div class="current-level level-0" id="device-networking-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">关键工序数控化率 (40%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="process-digitalization">
+                                                <div class="slider-value" id="process-digitalization-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业关键工序中过程控制系统或数据系统的覆盖率
+                                            </div>
+                                            <div class="current-level level-0" id="process-digitalization-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-database me-2"></i>数据要素 (30%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">上云用云情况 (35%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="cloud-usage">
+                                                <div class="slider-value" id="cloud-usage-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业运用云服务（私有云、公有云、混合云等）进行数据管理和业务协同的情况
+                                            </div>
+                                            <div class="current-level level-0" id="cloud-usage-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数据资源获取和应用能力 (65%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="data-capability">
+                                                <div class="slider-value" id="data-capability-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业数据采集、存储、处理和应用的能力水平
+                                            </div>
+                                            <div class="current-level level-0" id="data-capability-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-shield-alt me-2"></i>网络安全 (20%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">网络、数据安全保障能力 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="security-capability">
+                                                <div class="slider-value" id="security-capability-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业网络和数据安全防护措施及管理规范的实施情况
+                                            </div>
+                                            <div class="current-level level-0" id="security-capability-level">L0 尚未实施</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 数字化生产经营 -->
+                                    <div class="tab-pane fade" id="operation" role="tabpanel">
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-flask me-2"></i>研发设计 (16%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">产品设计数字化水平 (50%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="product-design">
+                                                <div class="slider-value" id="product-design-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业产品设计过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="product-design-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">工艺设计数字化水平 (50%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="process-design">
+                                                <div class="slider-value" id="process-design-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业工艺设计过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="process-design-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-industry me-2"></i>生产管控 (52%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">生产计划环节数字化水平 (10%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="production-planning">
+                                                <div class="slider-value" id="production-planning-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业生产计划制定和执行的数字化水平
+                                            </div>
+                                            <div class="current-level level-0" id="production-planning-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">生产作业数字化水平 (30%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="production-operation">
+                                                <div class="slider-value" id="production-operation-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业生产作业过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="production-operation-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">质量控制数字化水平 (8%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="quality-control">
+                                                <div class="slider-value" id="quality-control-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业质量控制过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="quality-control-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">仓储物流数字化水平 (12%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="warehouse-logistics">
+                                                <div class="slider-value" id="warehouse-logistics-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业仓储物流过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="warehouse-logistics-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">设备管理数字化水平 (12%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="equipment-management">
+                                                <div class="slider-value" id="equipment-management-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业设备管理过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="equipment-management-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">安全生产管理数字化水平 (10%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="safety-management">
+                                                <div class="slider-value" id="safety-management-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业安全生产管理过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="safety-management-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">环保管理数字化水平 (8%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="environmental-management">
+                                                <div class="slider-value" id="environmental-management-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业环保管理过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="environmental-management-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">能源管理数字化水平 (10%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="energy-management">
+                                                <div class="slider-value" id="energy-management-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业能源管理过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="energy-management-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-truck-loading me-2"></i>采购供应 (10%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">采购供应数字化水平 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="procurement-supply">
+                                                <div class="slider-value" id="procurement-supply-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业采购供应过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="procurement-supply-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-shopping-cart me-2"></i>营销管理 (10%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">营销管理数字化水平 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="marketing-management">
+                                                <div class="slider-value" id="marketing-management-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业营销管理过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="marketing-management-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-concierge-bell me-2"></i>产品服务 (12%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">产品服务数字化水平 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="product-service">
+                                                <div class="slider-value" id="product-service-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业产品服务过程中数字化工具和系统的应用水平
+                                            </div>
+                                            <div class="current-level level-0" id="product-service-level">L0 尚未实施</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 数字化管理 -->
+                                    <div class="tab-pane fade" id="management" role="tabpanel">
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-chess-king me-2"></i>经营战略 (15%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化认知及规划实施情况 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="strategy-implementation">
+                                                <div class="slider-value" id="strategy-implementation-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业对数字化转型的认知程度以及规划实施情况
+                                            </div>
+                                            <div class="current-level level-0" id="strategy-implementation-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-cogs me-2"></i>管理机制 (35%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化管理机制情况 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="management-mechanism">
+                                                <div class="slider-value" id="management-mechanism-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业数字化管理机制的建立和完善情况
+                                            </div>
+                                            <div class="current-level level-0" id="management-mechanism-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-user-graduate me-2"></i>人才建设 (25%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化人才配置情况 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="talent-configuration">
+                                                <div class="slider-value" id="talent-configuration-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业数字化人才的配置和培养情况
+                                            </div>
+                                            <div class="current-level level-0" id="talent-configuration-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-money-bill-wave me-2"></i>资金投入 (25%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">数字化资金投入情况 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="funding-investment">
+                                                <div class="slider-value" id="funding-investment-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业数字化资金投入的情况和比例
+                                            </div>
+                                            <div class="current-level level-0" id="funding-investment-level">L0 尚未实施</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 数字化成效 -->
+                                    <div class="tab-pane fade" id="results" role="tabpanel">
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-award me-2"></i>产品质量 (25%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">产品合格率 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="product-quality">
+                                                <div class="slider-value" id="product-quality-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                实施智能化改造后企业核心产品合格率的提升幅度
+                                            </div>
+                                            <div class="current-level level-0" id="product-quality-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-tachometer-alt me-2"></i>生产效率 (30%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">综合生产效率 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="production-efficiency">
+                                                <div class="slider-value" id="production-efficiency-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                实施智能化改造后企业综合生产效率的提升幅度
+                                            </div>
+                                            <div class="current-level level-0" id="production-efficiency-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-chart-line me-2"></i>价值效益 (25%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">营业收入成本 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="value-benefit">
+                                                <div class="slider-value" id="value-benefit-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业目前每百元营业收入中的成本相比于改造前的降低幅度
+                                            </div>
+                                            <div class="current-level level-0" id="value-benefit-level">L0 尚未实施</div>
+                                        </div>
+                                        
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-leaf me-2"></i>绿色低碳 (20%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">能耗成本 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="green-low-carbon">
+                                                <div class="slider-value" id="green-low-carbon-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                企业每万元营业收入中综合能源消费量相比于改造前的降低幅度
+                                            </div>
+                                            <div class="current-level level-0" id="green-low-carbon-level">L0 尚未实施</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 加分项 -->
+                                    <div class="tab-pane fade" id="bonus" role="tabpanel">
+                                        <div class="subcategory">
+                                            <h5><i class="fas fa-shield-alt me-2"></i>安全可控 (100%)</h5>
+                                        </div>
+                                        
+                                        <div class="indicator-item">
+                                            <label class="form-label fw-bold">应用安全可控系统装备情况 (100%)</label>
+                                            <div class="slider-container">
+                                                <input type="range" class="form-range" min="0" max="100" id="security-controllable">
+                                                <div class="slider-value" id="security-controllable-value">0</div>
+                                            </div>
+                                            <div class="indicator-description">
+                                                采用本土化设备、系统、产品、工具等的比例，在技术和产品领域具备完全的本土化掌控能力
+                                            </div>
+                                            <div class="current-level level-0" id="security-controllable-level">L0 尚未实施</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧：结果展示区域 -->
+                <div class="col-lg-4">
+                    <div class="result-summary">
+                        <h4>综合评价结果</h4>
+                        <div class="score-display" id="total-score">0</div>
+                        <div class="progress">
+                            <div id="total-score-progress" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <div class="total-grade" id="grade">L0 尚未实施</div>
+                        <button class="btn btn-reset" onclick="resetScores()">
+                            <i class="fas fa-redo me-2"></i> 重置所有分数
+                        </button>
+                        <button class="btn export-btn" id="export-pdf">
+                            <i class="fas fa-file-pdf me-2"></i> 导出PDF报告
+                        </button>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>一级指标得分</h5>
+                        
+                        <div class="primary-indicator" data-target="digital-foundation">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-microchip me-2"></i> 数字化基础</span>
+                                <span id="summary-digital-foundation">0</span>
+                            </div>
+                            <div class="progress">
+                                <div id="progress-digital-foundation" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="secondary-scores" id="secondary-digital-foundation">
+                                <div class="secondary-score-item">
+                                    <span>设备系统</span>
+                                    <span id="secondary-equipment-system">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>数据要素</span>
+                                    <span id="secondary-data-element">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>网络安全</span>
+                                    <span id="secondary-network-security">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="primary-indicator" data-target="digital-operation">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-cogs me-2"></i> 数字化生产经营</span>
+                                <span id="summary-digital-operation">0</span>
+                            </div>
+                            <div class="progress">
+                                <div id="progress-digital-operation" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="secondary-scores" id="secondary-digital-operation">
+                                <div class="secondary-score-item">
+                                    <span>研发设计</span>
+                                    <span id="secondary-rd-design">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>生产管控</span>
+                                    <span id="secondary-production-control">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>采购供应</span>
+                                    <span id="secondary-procurement">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>营销管理</span>
+                                    <span id="secondary-marketing">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>产品服务</span>
+                                    <span id="secondary-product-service">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="primary-indicator" data-target="digital-management">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-users me-2"></i> 数字化管理</span>
+                                <span id="summary-digital-management">0</span>
+                            </div>
+                            <div class="progress">
+                                <div id="progress-digital-management" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="secondary-scores" id="secondary-digital-management">
+                                <div class="secondary-score-item">
+                                    <span>经营战略</span>
+                                    <span id="secondary-business-strategy">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>管理机制</span>
+                                    <span id="secondary-management-mechanism">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>人才建设</span>
+                                    <span id="secondary-talent-development">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>资金投入</span>
+                                    <span id="secondary-funding">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="primary-indicator" data-target="digital-results">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-trophy me-2"></i> 数字化成效</span>
+                                <span id="summary-digital-results">0</span>
+                            </div>
+                            <div class="progress">
+                                <div id="progress-digital-results" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="secondary-scores" id="secondary-digital-results">
+                                <div class="secondary-score-item">
+                                    <span>产品质量</span>
+                                    <span id="secondary-product-quality">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>生产效率</span>
+                                    <span id="secondary-production-efficiency">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>价值效益</span>
+                                    <span id="secondary-value-benefit">0</span>
+                                </div>
+                                <div class="secondary-score-item">
+                                    <span>绿色低碳</span>
+                                    <span id="secondary-green-low-carbon">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="primary-indicator" data-target="bonus">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-star me-2"></i> 加分项</span>
+                                <span id="summary-bonus">0</span>
+                            </div>
+                            <div class="progress">
+                                <div id="progress-bonus" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="secondary-scores" id="secondary-bonus">
+                                <div class="secondary-score-item">
+                                    <span>安全可控</span>
+                                    <span id="secondary-security-controllable">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>等级说明</h5>
+                        
+                        <div class="level-description">
+                            <strong>L0 尚未实施 [0-10)</strong><br>
+                            企业尚未开展数字化转型。
+                        </div>
+                        
+                        <div class="level-description">
+                            <strong>L1 起步建设 [10-20)</strong><br>
+                            企业开始对数字化转型进行规划，具备基础的数字化转型水平和条件，对核心业务信息数字化管理。
+                        </div>
+                        
+                        <div class="level-description">
+                            <strong>L2 单项应用 [20-40)</strong><br>
+                            企业采用自动化技术、信息技术手段对核心装备和业务环节进行改造和规范，实现单一业务环节的数字化转型。
+                        </div>
+                        
+                        <div class="level-description">
+                            <strong>L3 综合集成 [40-60)</strong><br>
+                            企业对装备、系统等启动创新集成，实现跨业务环节的数据共享，从单一环节优化走向多流程数字化协同。
+                        </div>
+                        
+                        <div class="level-description">
+                            <strong>L4 协同优化 [60-80)</strong><br>
+                            企业进一步强化全流程数据贯通，加快产业链业务数字化协同，对关键业务环节进行数据挖掘。
+                        </div>
+                        
+                        <div class="level-description">
+                            <strong>L5 智能引领 [80-105]</strong><br>
+                            将数字孪生、人工智能、物联网、大数据分析等技术组合融入传统制造业，实现人机物的互联互通。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 使用说明模态框 -->
+    <div class="modal fade" id="instructionsModal" tabindex="-1" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="instructionsModalLabel"><i class="fas fa-info-circle me-2"></i>系统使用说明</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>评价系统概述</h5>
+                    <p>本系统基于四川省制造业智能化改造数字化转型评价指标体系，帮助企业评估自身的数字化转型水平。</p>
+                    
+                    <h5>使用步骤</h5>
+                    <ol>
+                        <li>通过左侧选项卡选择评价类别（数字化基础、数字化生产经营、数字化管理、数字化成效、加分项）</li>
+                        <li>在每个三级指标下方拖动滑块进行评分（0-100分）</li>
+                        <li>系统会实时计算总分和等级</li>
+                        <li>点击右侧一级指标可以查看二级指标得分详情</li>
+                        <li>点击"重置所有分数"可以重新开始评价</li>
+                        <li>点击"导出PDF报告"可以生成评价报告</li>
+                    </ol>
+                    
+                    <h5>等级说明</h5>
+                    <p>系统根据总分将企业数字化转型水平分为6个等级：</p>
+                    <ul>
+                        <li><strong>L0 尚未实施 [0-10)</strong>：企业尚未开展数字化转型</li>
+                        <li><strong>L1 起步建设 [10-20)</strong>：企业开始对数字化转型进行规划</li>
+                        <li><strong>L2 单项应用 [20-40)</strong>：企业实现单一业务环节的数字化转型</li>
+                        <li><strong>L3 综合集成 [40-60)</strong>：企业实现跨业务环节的数据共享</li>
+                        <li><strong>L4 协同优化 [60-80)</strong>：企业强化全流程数据贯通</li>
+                        <li><strong>L5 智能引领 [80-105]</strong>：企业实现全链条全业务全环节的优化和创新</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // 初始化所有滑块的值显示
+        document.querySelectorAll('.form-range').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id + '-value');
+            const levelDisplay = document.getElementById(slider.id + '-level');
+            
+            // 设置初始值
+            valueDisplay.textContent = slider.value;
+            updateLevelDisplay(slider.value, levelDisplay);
+            
+            // 添加输入事件监听
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+                updateLevelDisplay(this.value, levelDisplay);
+                calculateScores(); // 实时计算总分
+            });
+        });
+        
+        // 为一级指标添加点击事件
+        document.querySelectorAll('.primary-indicator').forEach(indicator => {
+            indicator.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const secondaryScores = document.getElementById(`secondary-${targetId}`);
+                
+                // 切换显示/隐藏二级指标得分
+                if (secondaryScores.style.display === 'block') {
+                    secondaryScores.style.display = 'none';
+                } else {
+                    // 隐藏所有其他二级指标得分
+                    document.querySelectorAll('.secondary-scores').forEach(scores => {
+                        scores.style.display = 'none';
+                    });
+                    // 显示当前二级指标得分
+                    secondaryScores.style.display = 'block';
+                }
+            });
+        });
+        
+        // 根据分数更新等级显示
+        function updateLevelDisplay(score, element) {
+            const numScore = parseInt(score);
+            let level, levelClass;
+            
+            if (numScore < 10) {
+                level = "L0 尚未实施";
+                levelClass = "level-0";
+            } else if (numScore < 20) {
+                level = "L1 起步建设";
+                levelClass = "level-1";
+            } else if (numScore < 40) {
+                level = "L2 单项应用";
+                levelClass = "level-2";
+            } else if (numScore < 60) {
+                level = "L3 综合集成";
+                levelClass = "level-3";
+            } else if (numScore < 80) {
+                level = "L4 协同优化";
+                levelClass = "level-4";
+            } else {
+                level = "L5 智能引领";
+                levelClass = "level-5";
+            }
+            
+            element.textContent = level;
+            element.className = "current-level " + levelClass;
+        }
+        
+        // 计算所有得分
+        function calculateScores() {
+            // 数字化基础
+            // 设备系统
+            const devicePopularization = parseInt(document.getElementById('device-popularization').value) || 0;
+            const deviceNetworking = parseInt(document.getElementById('device-networking').value) || 0;
+            const processDigitalization = parseInt(document.getElementById('process-digitalization').value) || 0;
+            const equipmentSystemScore = (devicePopularization * 0.35 + deviceNetworking * 0.25 + processDigitalization * 0.40);
+            document.getElementById('secondary-equipment-system').textContent = equipmentSystemScore.toFixed(1);
+            
+            // 数据要素
+            const cloudUsage = parseInt(document.getElementById('cloud-usage').value) || 0;
+            const dataCapability = parseInt(document.getElementById('data-capability').value) || 0;
+            const dataElementScore = (cloudUsage * 0.35 + dataCapability * 0.65);
+            document.getElementById('secondary-data-element').textContent = dataElementScore.toFixed(1);
+            
+            // 网络安全
+            const securityCapability = parseInt(document.getElementById('security-capability').value) || 0;
+            const networkSecurityScore = securityCapability;
+            document.getElementById('secondary-network-security').textContent = networkSecurityScore.toFixed(1);
+            
+            // 数字化基础总分
+            const digitalFoundationScore = (equipmentSystemScore * 0.5 + dataElementScore * 0.3 + networkSecurityScore * 0.2);
+            document.getElementById('summary-digital-foundation').textContent = digitalFoundationScore.toFixed(1);
+            document.getElementById('progress-digital-foundation').style.width = digitalFoundationScore + '%';
+            
+            // 数字化生产经营
+            // 研发设计
+            const productDesign = parseInt(document.getElementById('product-design').value) || 0;
+            const processDesign = parseInt(document.getElementById('process-design').value) || 0;
+            const rdDesignScore = (productDesign * 0.5 + processDesign * 0.5);
+            document.getElementById('secondary-rd-design').textContent = rdDesignScore.toFixed(1);
+            
+            // 生产管控
+            const productionPlanning = parseInt(document.getElementById('production-planning').value) || 0;
+            const productionOperation = parseInt(document.getElementById('production-operation').value) || 0;
+            const qualityControl = parseInt(document.getElementById('quality-control').value) || 0;
+            const warehouseLogistics = parseInt(document.getElementById('warehouse-logistics').value) || 0;
+            const equipmentManagement = parseInt(document.getElementById('equipment-management').value) || 0;
+            const safetyManagement = parseInt(document.getElementById('safety-management').value) || 0;
+            const environmentalManagement = parseInt(document.getElementById('environmental-management').value) || 0;
+            const energyManagement = parseInt(document.getElementById('energy-management').value) || 0;
+            const productionControlScore = (
+                productionPlanning * 0.10 + 
+                productionOperation * 0.30 + 
+                qualityControl * 0.08 + 
+                warehouseLogistics * 0.12 + 
+                equipmentManagement * 0.12 + 
+                safetyManagement * 0.10 + 
+                environmentalManagement * 0.08 + 
+                energyManagement * 0.10
+            );
+            document.getElementById('secondary-production-control').textContent = productionControlScore.toFixed(1);
+            
+            // 采购供应
+            const procurementSupply = parseInt(document.getElementById('procurement-supply').value) || 0;
+            const procurementScore = procurementSupply;
+            document.getElementById('secondary-procurement').textContent = procurementScore.toFixed(1);
+            
+            // 营销管理
+            const marketingManagement = parseInt(document.getElementById('marketing-management').value) || 0;
+            const marketingScore = marketingManagement;
+            document.getElementById('secondary-marketing').textContent = marketingScore.toFixed(1);
+            
+            // 产品服务
+            const productService = parseInt(document.getElementById('product-service').value) || 0;
+            const productServiceScore = productService;
+            document.getElementById('secondary-product-service').textContent = productServiceScore.toFixed(1);
+            
+            // 数字化生产经营总分
+            const digitalOperationScore = (
+                rdDesignScore * 0.16 + 
+                productionControlScore * 0.52 + 
+                procurementScore * 0.10 + 
+                marketingScore * 0.10 + 
+                productServiceScore * 0.12
+            );
+            document.getElementById('summary-digital-operation').textContent = digitalOperationScore.toFixed(1);
+            document.getElementById('progress-digital-operation').style.width = digitalOperationScore + '%';
+            
+            // 数字化管理
+            // 经营战略
+            const strategyImplementation = parseInt(document.getElementById('strategy-implementation').value) || 0;
+            const businessStrategyScore = strategyImplementation;
+            document.getElementById('secondary-business-strategy').textContent = businessStrategyScore.toFixed(1);
+            
+            // 管理机制
+            const managementMechanism = parseInt(document.getElementById('management-mechanism').value) || 0;
+            const managementMechanismScore = managementMechanism;
+            document.getElementById('secondary-management-mechanism').textContent = managementMechanismScore.toFixed(1);
+            
+            // 人才建设
+            const talentConfiguration = parseInt(document.getElementById('talent-configuration').value) || 0;
+            const talentDevelopmentScore = talentConfiguration;
+            document.getElementById('secondary-talent-development').textContent = talentDevelopmentScore.toFixed(1);
+            
+            // 资金投入
+            const fundingInvestment = parseInt(document.getElementById('funding-investment').value) || 0;
+            const fundingScore = fundingInvestment;
+            document.getElementById('secondary-funding').textContent = fundingScore.toFixed(1);
+            
+            // 数字化管理总分
+            const digitalManagementScore = (
+                businessStrategyScore * 0.15 + 
+                managementMechanismScore * 0.35 + 
+                talentDevelopmentScore * 0.25 + 
+                fundingScore * 0.25
+            );
+            document.getElementById('summary-digital-management').textContent = digitalManagementScore.toFixed(1);
+            document.getElementById('progress-digital-management').style.width = digitalManagementScore + '%';
+            
+            // 数字化成效
+            // 产品质量
+            const productQuality = parseInt(document.getElementById('product-quality').value) || 0;
+            const productQualityScore = productQuality;
+            document.getElementById('secondary-product-quality').textContent = productQualityScore.toFixed(1);
+            
+            // 生产效率
+            const productionEfficiency = parseInt(document.getElementById('production-efficiency').value) || 0;
+            const productionEfficiencyScore = productionEfficiency;
+            document.getElementById('secondary-production-efficiency').textContent = productionEfficiencyScore.toFixed(1);
+            
+            // 价值效益
+            const valueBenefit = parseInt(document.getElementById('value-benefit').value) || 0;
+            const valueBenefitScore = valueBenefit;
+            document.getElementById('secondary-value-benefit').textContent = valueBenefitScore.toFixed(1);
+            
+            // 绿色低碳
+            const greenLowCarbon = parseInt(document.getElementById('green-low-carbon').value) || 0;
+            const greenLowCarbonScore = greenLowCarbon;
+            document.getElementById('secondary-green-low-carbon').textContent = greenLowCarbonScore.toFixed(1);
+            
+            // 数字化成效总分
+            const digitalResultsScore = (
+                productQualityScore * 0.25 + 
+                productionEfficiencyScore * 0.30 + 
+                valueBenefitScore * 0.25 + 
+                greenLowCarbonScore * 0.20
+            );
+            document.getElementById('summary-digital-results').textContent = digitalResultsScore.toFixed(1);
+            document.getElementById('progress-digital-results').style.width = digitalResultsScore + '%';
+            
+            // 加分项
+            const securityControllable = parseInt(document.getElementById('security-controllable').value) || 0;
+            const bonusScore = securityControllable;
+            document.getElementById('secondary-security-controllable').textContent = bonusScore.toFixed(1);
+            document.getElementById('summary-bonus').textContent = bonusScore.toFixed(1);
+            document.getElementById('progress-bonus').style.width = bonusScore + '%';
+            
+            // 计算总分
+            const totalScore = (
+                digitalFoundationScore * 0.20 + 
+                digitalOperationScore * 0.40 + 
+                digitalManagementScore * 0.20 + 
+                digitalResultsScore * 0.20 + 
+                bonusScore * 0.05
+            );
+            document.getElementById('total-score').textContent = totalScore.toFixed(1);
+            document.getElementById('total-score-progress').style.width = (totalScore / 105 * 100) + '%';
+            
+            // 确定等级
+            let grade = '';
+            let gradeClass = '';
+            if (totalScore < 10) {
+                grade = 'L0 尚未实施';
+                gradeClass = 'level-0';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-secondary';
+            } else if (totalScore < 20) {
+                grade = 'L1 起步建设';
+                gradeClass = 'level-1';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-primary';
+            } else if (totalScore < 40) {
+                grade = 'L2 单项应用';
+                gradeClass = 'level-2';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-success';
+            } else if (totalScore < 60) {
+                grade = 'L3 综合集成';
+                gradeClass = 'level-3';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-warning';
+            } else if (totalScore < 80) {
+                grade = 'L4 协同优化';
+                gradeClass = 'level-4';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-orange';
+            } else {
+                grade = 'L5 智能引领';
+                gradeClass = 'level-5';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-danger';
+            }
+            document.getElementById('grade').textContent = grade;
+            document.getElementById('grade').className = 'total-grade ' + gradeClass;
+        }
+        
+        // 重置所有分数
+        function resetScores() {
+            document.querySelectorAll('.form-range').forEach(slider => {
+                slider.value = 0;
+                const valueDisplay = document.getElementById(slider.id + '-value');
+                const levelDisplay = document.getElementById(slider.id + '-level');
+                valueDisplay.textContent = '0';
+                updateLevelDisplay(0, levelDisplay);
+            });
+            
+            // 隐藏所有二级指标得分
+            document.querySelectorAll('.secondary-scores').forEach(scores => {
+                scores.style.display = 'none';
+            });
+            
+            calculateScores();
+        }
+        
+        // 导出PDF功能
+        document.getElementById('export-pdf').addEventListener('click', function() {
+            // 创建PDF实例
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // 设置标题
+            doc.setFontSize(20);
+            doc.setTextColor(30, 136, 229);
+            doc.text('制造业数字化转型评价报告', 105, 20, { align: 'center' });
+            
+            // 添加日期
+            const today = new Date();
+            const dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日';
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text('评估日期: ' + dateStr, 105, 30, { align: 'center' });
+            
+            // 添加总分和等级
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('综合评价结果', 20, 50);
+            doc.setFontSize(24);
+            doc.setTextColor(30, 136, 229);
+            doc.text('总分: ' + document.getElementById('total-score').textContent, 20, 65);
+            doc.setFontSize(18);
+            doc.text('等级: ' + document.getElementById('grade').textContent, 20, 80);
+            
+            // 添加一级指标得分
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('一级指标得分', 20, 100);
+            
+            let yPosition = 115;
+            const indicators = [
+                { name: '数字化基础', score: document.getElementById('summary-digital-foundation').textContent },
+                { name: '数字化生产经营', score: document.getElementById('summary-digital-operation').textContent },
+                { name: '数字化管理', score: document.getElementById('summary-digital-management').textContent },
+                { name: '数字化成效', score: document.getElementById('summary-digital-results').textContent },
+                { name: '加分项', score: document.getElementById('summary-bonus').textContent }
+            ];
+            
+            indicators.forEach(indicator => {
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(indicator.name + ': ' + indicator.score + '分', 20, yPosition);
+                yPosition += 10;
+            });
+            
+            // 添加等级说明
+            yPosition += 10;
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('等级说明', 20, yPosition);
+            
+            yPosition += 15;
+            const levelDescriptions = [
+                'L0 尚未实施 [0-10): 企业尚未开展数字化转型',
+                'L1 起步建设 [10-20): 企业开始对数字化转型进行规划',
+                'L2 单项应用 [20-40): 企业实现单一业务环节的数字化转型',
+                'L3 综合集成 [40-60): 企业实现跨业务环节的数据共享',
+                'L4 协同优化 [60-80): 企业强化全流程数据贯通',
+                'L5 智能引领 [80-105]: 企业实现全链条全业务全环节的优化和创新'
+            ];
+            
+            levelDescriptions.forEach(desc => {
+                doc.setFontSize(10);
+                doc.setTextColor(80, 80, 80);
+                doc.text(desc, 20, yPosition);
+                yPosition += 8;
+            });
+            
+            // 保存PDF
+            doc.save('制造业数字化转型评价报告_' + dateStr + '.pdf');
+        });
+        
+        // 页面加载时自动计算一次
+        window.onload = calculateScores;
+    </script>
+</body>
+</html>
