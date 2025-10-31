@@ -509,7 +509,6 @@
             right: 5%;
             font-size: 2rem;
             color: white;
-            transform: rotate(180deg);
             animation: fly 20s linear infinite;
         }
         
@@ -531,7 +530,7 @@
         
         @keyframes fly {
             0% { transform: translateX(100px) rotate(0deg); }
-            100% { transform: translateX(-100vw) rotate(5deg); }
+            100% { transform: translateX(-100vw) rotate(180deg); }
         }
         
         @keyframes float {
