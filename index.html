@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的-制造业数字化转型评价系统</title>
+    <title>制造业数字化转型评价系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -1801,79 +1801,122 @@
             }
         };
 
-        // 初始化所有滑块的值显示
-        document.querySelectorAll('.form-range').forEach(slider => {
-            const valueDisplay = document.getElementById(slider.id + '-value');
-            const levelDisplay = document.getElementById(slider.id + '-level');
-            const guidelineDisplay = document.getElementById(slider.id + '-guideline');
-            
-            // 设置初始值
-            valueDisplay.textContent = slider.value;
-            updateLevelDisplay(slider.value, levelDisplay, guidelineDisplay, slider.id);
-            
-            // 添加输入事件监听
-            slider.addEventListener('input', function() {
-                valueDisplay.textContent = this.value;
-                updateLevelDisplay(this.value, levelDisplay, guidelineDisplay, this.id);
-                calculateScores(); // 实时计算总分
+        // 缓存DOM元素引用
+        const sliderCache = new Map();
+        const resultCache = new Map();
+        
+        // 初始化缓存
+        function initializeCache() {
+            // 缓存所有滑块元素
+            document.querySelectorAll('.form-range').forEach(slider => {
+                const id = slider.id;
+                sliderCache.set(id, {
+                    element: slider,
+                    valueDisplay: document.getElementById(id + '-value'),
+                    levelDisplay: document.getElementById(id + '-level'),
+                    guidelineDisplay: document.getElementById(id + '-guideline')
+                });
             });
-        });
+            
+            // 缓存结果元素
+            const resultIds = [
+                'total-score', 'total-score-progress', 'grade',
+                'summary-digital-foundation', 'progress-digital-foundation',
+                'summary-digital-operation', 'progress-digital-operation',
+                'summary-digital-management', 'progress-digital-management',
+                'summary-digital-results', 'progress-digital-results',
+                'summary-bonus', 'progress-bonus'
+            ];
+            
+            resultIds.forEach(id => {
+                resultCache.set(id, document.getElementById(id));
+            });
+        }
+        
+        // 使用防抖优化评分计算
+        let calculateTimeout;
+        function debouncedCalculateScores() {
+            clearTimeout(calculateTimeout);
+            calculateTimeout = setTimeout(calculateScores, 100);
+        }
+        
+        // 初始化所有滑块的值显示
+        function initializeSliders() {
+            sliderCache.forEach((cache, id) => {
+                const { element, valueDisplay, levelDisplay, guidelineDisplay } = cache;
+                
+                // 设置初始值
+                valueDisplay.textContent = element.value;
+                updateLevelDisplay(element.value, levelDisplay, guidelineDisplay, id);
+                
+                // 添加输入事件监听
+                element.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value;
+                    updateLevelDisplay(this.value, levelDisplay, guidelineDisplay, id);
+                    debouncedCalculateScores(); // 使用防抖优化计算
+                });
+            });
+        }
         
         // 为一级指标添加点击事件
-        document.querySelectorAll('.primary-indicator').forEach(indicator => {
-            indicator.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const secondaryScores = document.getElementById(`secondary-${targetId}`);
-                
-                // 切换显示/隐藏二级指标得分
-                if (secondaryScores.style.display === 'block') {
-                    secondaryScores.style.display = 'none';
-                } else {
-                    // 隐藏所有其他二级指标得分
-                    document.querySelectorAll('.secondary-scores').forEach(scores => {
-                        scores.style.display = 'none';
-                    });
-                    // 显示当前二级指标得分
-                    secondaryScores.style.display = 'block';
-                }
+        function initializePrimaryIndicators() {
+            document.querySelectorAll('.primary-indicator').forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const secondaryScores = document.getElementById(`secondary-${targetId}`);
+                    
+                    // 切换显示/隐藏二级指标得分
+                    if (secondaryScores.style.display === 'block') {
+                        secondaryScores.style.display = 'none';
+                    } else {
+                        // 隐藏所有其他二级指标得分
+                        document.querySelectorAll('.secondary-scores').forEach(scores => {
+                            scores.style.display = 'none';
+                        });
+                        // 显示当前二级指标得分
+                        secondaryScores.style.display = 'block';
+                    }
+                });
             });
-        });
+        }
         
         // 导出结果功能
-        document.getElementById('export-results').addEventListener('click', function() {
-            // 创建CSV内容
-            let csvContent = "指标分类,指标名称,得分,等级\n";
-            
-            // 收集所有指标数据
-            document.querySelectorAll('.indicator-item').forEach(item => {
-                const label = item.querySelector('.form-label').textContent;
-                const value = item.querySelector('.slider-value').textContent;
-                const level = item.querySelector('.level-name').textContent;
+        function initializeExportResults() {
+            document.getElementById('export-results').addEventListener('click', function() {
+                // 创建CSV内容
+                let csvContent = "指标分类,指标名称,得分,等级\n";
                 
-                // 提取指标分类
-                let category = '';
-                const subcategory = item.closest('.subcategory');
-                if (subcategory) {
-                    category = subcategory.querySelector('h5').textContent;
-                }
+                // 收集所有指标数据
+                document.querySelectorAll('.indicator-item').forEach(item => {
+                    const label = item.querySelector('.form-label').textContent;
+                    const value = item.querySelector('.slider-value').textContent;
+                    const level = item.querySelector('.level-name').textContent;
+                    
+                    // 提取指标分类
+                    let category = '';
+                    const subcategory = item.closest('.subcategory');
+                    if (subcategory) {
+                        category = subcategory.querySelector('h5').textContent;
+                    }
+                    
+                    csvContent += `"${category}","${label}","${value}","${level}"\n`;
+                });
                 
-                csvContent += `"${category}","${label}","${value}","${level}"\n`;
+                // 添加总分信息
+                csvContent += `"综合评价","总分","${resultCache.get('total-score').textContent}","${resultCache.get('grade').textContent}"\n`;
+                
+                // 创建下载链接
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', '制造业数字化转型评价结果.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
-            
-            // 添加总分信息
-            csvContent += `"综合评价","总分","${document.getElementById('total-score').textContent}","${document.getElementById('grade').textContent}"\n`;
-            
-            // 创建下载链接
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', '制造业数字化转型评价结果.csv');
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+        }
         
         // 根据分数更新等级显示和评分说明
         function updateLevelDisplay(score, levelElement, guidelineElement, indicatorId) {
@@ -1921,44 +1964,44 @@
         function calculateScores() {
             // 数字化基础
             // 设备系统
-            const devicePopularization = parseInt(document.getElementById('device-popularization').value) || 0;
-            const deviceNetworking = parseInt(document.getElementById('device-networking').value) || 0;
-            const processDigitalization = parseInt(document.getElementById('process-digitalization').value) || 0;
+            const devicePopularization = parseInt(sliderCache.get('device-popularization').element.value) || 0;
+            const deviceNetworking = parseInt(sliderCache.get('device-networking').element.value) || 0;
+            const processDigitalization = parseInt(sliderCache.get('process-digitalization').element.value) || 0;
             const equipmentSystemScore = (devicePopularization * 0.35 + deviceNetworking * 0.25 + processDigitalization * 0.40);
             document.getElementById('secondary-equipment-system').textContent = equipmentSystemScore.toFixed(1);
             
             // 数据要素
-            const cloudUsage = parseInt(document.getElementById('cloud-usage').value) || 0;
-            const dataCapability = parseInt(document.getElementById('data-capability').value) || 0;
+            const cloudUsage = parseInt(sliderCache.get('cloud-usage').element.value) || 0;
+            const dataCapability = parseInt(sliderCache.get('data-capability').element.value) || 0;
             const dataElementScore = (cloudUsage * 0.35 + dataCapability * 0.65);
             document.getElementById('secondary-data-element').textContent = dataElementScore.toFixed(1);
             
             // 网络安全
-            const securityCapability = parseInt(document.getElementById('security-capability').value) || 0;
+            const securityCapability = parseInt(sliderCache.get('security-capability').element.value) || 0;
             const networkSecurityScore = securityCapability;
             document.getElementById('secondary-network-security').textContent = networkSecurityScore.toFixed(1);
             
             // 数字化基础总分
             const digitalFoundationScore = (equipmentSystemScore * 0.5 + dataElementScore * 0.3 + networkSecurityScore * 0.2);
-            document.getElementById('summary-digital-foundation').textContent = digitalFoundationScore.toFixed(1);
-            document.getElementById('progress-digital-foundation').style.width = digitalFoundationScore + '%';
+            resultCache.get('summary-digital-foundation').textContent = digitalFoundationScore.toFixed(1);
+            resultCache.get('progress-digital-foundation').style.width = digitalFoundationScore + '%';
             
             // 数字化生产经营
             // 研发设计
-            const productDesign = parseInt(document.getElementById('product-design').value) || 0;
-            const processDesign = parseInt(document.getElementById('process-design').value) || 0;
+            const productDesign = parseInt(sliderCache.get('product-design').element.value) || 0;
+            const processDesign = parseInt(sliderCache.get('process-design').element.value) || 0;
             const rdDesignScore = (productDesign * 0.5 + processDesign * 0.5);
             document.getElementById('secondary-rd-design').textContent = rdDesignScore.toFixed(1);
             
             // 生产管控
-            const productionPlanning = parseInt(document.getElementById('production-planning').value) || 0;
-            const productionOperation = parseInt(document.getElementById('production-operation').value) || 0;
-            const qualityControl = parseInt(document.getElementById('quality-control').value) || 0;
-            const warehouseLogistics = parseInt(document.getElementById('warehouse-logistics').value) || 0;
-            const equipmentManagement = parseInt(document.getElementById('equipment-management').value) || 0;
-            const safetyManagement = parseInt(document.getElementById('safety-management').value) || 0;
-            const environmentalManagement = parseInt(document.getElementById('environmental-management').value) || 0;
-            const energyManagement = parseInt(document.getElementById('energy-management').value) || 0;
+            const productionPlanning = parseInt(sliderCache.get('production-planning').element.value) || 0;
+            const productionOperation = parseInt(sliderCache.get('production-operation').element.value) || 0;
+            const qualityControl = parseInt(sliderCache.get('quality-control').element.value) || 0;
+            const warehouseLogistics = parseInt(sliderCache.get('warehouse-logistics').element.value) || 0;
+            const equipmentManagement = parseInt(sliderCache.get('equipment-management').element.value) || 0;
+            const safetyManagement = parseInt(sliderCache.get('safety-management').element.value) || 0;
+            const environmentalManagement = parseInt(sliderCache.get('environmental-management').element.value) || 0;
+            const energyManagement = parseInt(sliderCache.get('energy-management').element.value) || 0;
             const productionControlScore = (
                 productionPlanning * 0.10 + 
                 productionOperation * 0.30 + 
@@ -1972,17 +2015,17 @@
             document.getElementById('secondary-production-control').textContent = productionControlScore.toFixed(1);
             
             // 采购供应
-            const procurementSupply = parseInt(document.getElementById('procurement-supply').value) || 0;
+            const procurementSupply = parseInt(sliderCache.get('procurement-supply').element.value) || 0;
             const procurementScore = procurementSupply;
             document.getElementById('secondary-procurement').textContent = procurementScore.toFixed(1);
             
             // 营销管理
-            const marketingManagement = parseInt(document.getElementById('marketing-management').value) || 0;
+            const marketingManagement = parseInt(sliderCache.get('marketing-management').element.value) || 0;
             const marketingScore = marketingManagement;
             document.getElementById('secondary-marketing').textContent = marketingScore.toFixed(1);
             
             // 产品服务
-            const productService = parseInt(document.getElementById('product-service').value) || 0;
+            const productService = parseInt(sliderCache.get('product-service').element.value) || 0;
             const productServiceScore = productService;
             document.getElementById('secondary-product-service').textContent = productServiceScore.toFixed(1);
             
@@ -1994,14 +2037,14 @@
                 marketingScore * 0.10 + 
                 productServiceScore * 0.12
             );
-            document.getElementById('summary-digital-operation').textContent = digitalOperationScore.toFixed(1);
-            document.getElementById('progress-digital-operation').style.width = digitalOperationScore + '%';
+            resultCache.get('summary-digital-operation').textContent = digitalOperationScore.toFixed(1);
+            resultCache.get('progress-digital-operation').style.width = digitalOperationScore + '%';
             
             // 数字化管理
-            const digitalStrategy = parseInt(document.getElementById('digital-strategy').value) || 0;
-            const managementMechanism = parseInt(document.getElementById('management-mechanism').value) || 0;
-            const talentDevelopment = parseInt(document.getElementById('talent-development').value) || 0;
-            const funding = parseInt(document.getElementById('funding').value) || 0;
+            const digitalStrategy = parseInt(sliderCache.get('digital-strategy').element.value) || 0;
+            const managementMechanism = parseInt(sliderCache.get('management-mechanism').element.value) || 0;
+            const talentDevelopment = parseInt(sliderCache.get('talent-development').element.value) || 0;
+            const funding = parseInt(sliderCache.get('funding').element.value) || 0;
             
             // 数字化管理总分
             const digitalManagementScore = (
@@ -2010,14 +2053,14 @@
                 talentDevelopment * 0.25 + 
                 funding * 0.25
             );
-            document.getElementById('summary-digital-management').textContent = digitalManagementScore.toFixed(1);
-            document.getElementById('progress-digital-management').style.width = digitalManagementScore + '%';
+            resultCache.get('summary-digital-management').textContent = digitalManagementScore.toFixed(1);
+            resultCache.get('progress-digital-management').style.width = digitalManagementScore + '%';
             
             // 数字化成效
-            const productQuality = parseInt(document.getElementById('product-quality').value) || 0;
-            const productionEfficiency = parseInt(document.getElementById('production-efficiency').value) || 0;
-            const valueBenefit = parseInt(document.getElementById('value-benefit').value) || 0;
-            const greenLowCarbon = parseInt(document.getElementById('green-low-carbon').value) || 0;
+            const productQuality = parseInt(sliderCache.get('product-quality').element.value) || 0;
+            const productionEfficiency = parseInt(sliderCache.get('production-efficiency').element.value) || 0;
+            const valueBenefit = parseInt(sliderCache.get('value-benefit').element.value) || 0;
+            const greenLowCarbon = parseInt(sliderCache.get('green-low-carbon').element.value) || 0;
             
             // 数字化成效总分
             const digitalResultsScore = (
@@ -2026,14 +2069,14 @@
                 valueBenefit * 0.25 + 
                 greenLowCarbon * 0.20
             );
-            document.getElementById('summary-digital-results').textContent = digitalResultsScore.toFixed(1);
-            document.getElementById('progress-digital-results').style.width = digitalResultsScore + '%';
+            resultCache.get('summary-digital-results').textContent = digitalResultsScore.toFixed(1);
+            resultCache.get('progress-digital-results').style.width = digitalResultsScore + '%';
             
             // 加分项
-            const securityControllable = parseInt(document.getElementById('security-controllable').value) || 0;
+            const securityControllable = parseInt(sliderCache.get('security-controllable').element.value) || 0;
             const bonusScore = securityControllable;
-            document.getElementById('summary-bonus').textContent = bonusScore.toFixed(1);
-            document.getElementById('progress-bonus').style.width = bonusScore + '%';
+            resultCache.get('summary-bonus').textContent = bonusScore.toFixed(1);
+            resultCache.get('progress-bonus').style.width = bonusScore + '%';
             
             // 计算总分
             const totalScore = (
@@ -2043,8 +2086,8 @@
                 digitalResultsScore * 0.20 + 
                 bonusScore * 0.05
             );
-            document.getElementById('total-score').textContent = totalScore.toFixed(1);
-            document.getElementById('total-score-progress').style.width = (totalScore / 105 * 100) + '%';
+            resultCache.get('total-score').textContent = totalScore.toFixed(1);
+            resultCache.get('total-score-progress').style.width = (totalScore / 105 * 100) + '%';
             
             // 确定等级
             let grade = '';
@@ -2052,41 +2095,39 @@
             if (totalScore < 10) {
                 grade = 'L0 尚未实施';
                 gradeClass = 'level-0';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-secondary';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-secondary';
             } else if (totalScore < 20) {
                 grade = 'L1 起步建设';
                 gradeClass = 'level-1';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-primary';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-primary';
             } else if (totalScore < 40) {
                 grade = 'L2 单项应用';
                 gradeClass = 'level-2';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-success';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-success';
             } else if (totalScore < 60) {
                 grade = 'L3 综合集成';
                 gradeClass = 'level-3';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-warning';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-warning';
             } else if (totalScore < 80) {
                 grade = 'L4 协同优化';
                 gradeClass = 'level-4';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-orange';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-orange';
             } else {
                 grade = 'L5 智能引领';
                 gradeClass = 'level-5';
-                document.getElementById('total-score-progress').className = 'progress-bar bg-danger';
+                resultCache.get('total-score-progress').className = 'progress-bar bg-danger';
             }
-            document.getElementById('grade').textContent = grade;
-            document.getElementById('grade').className = 'total-grade ' + gradeClass;
+            resultCache.get('grade').textContent = grade;
+            resultCache.get('grade').className = 'total-grade ' + gradeClass;
         }
         
         // 重置所有分数
         function resetScores() {
-            document.querySelectorAll('.form-range').forEach(slider => {
-                slider.value = 0;
-                const valueDisplay = document.getElementById(slider.id + '-value');
-                const levelDisplay = document.getElementById(slider.id + '-level');
-                const guidelineDisplay = document.getElementById(slider.id + '-guideline');
+            sliderCache.forEach((cache, id) => {
+                const { element, valueDisplay, levelDisplay, guidelineDisplay } = cache;
+                element.value = 0;
                 valueDisplay.textContent = '0';
-                updateLevelDisplay(0, levelDisplay, guidelineDisplay, slider.id);
+                updateLevelDisplay(0, levelDisplay, guidelineDisplay, id);
             });
             
             // 隐藏所有二级指标得分
@@ -2097,8 +2138,14 @@
             calculateScores();
         }
         
-        // 页面加载时自动计算一次
-        window.onload = calculateScores;
+        // 页面加载时初始化
+        window.onload = function() {
+            initializeCache();
+            initializeSliders();
+            initializePrimaryIndicators();
+            initializeExportResults();
+            calculateScores();
+        };
     </script>
 </body>
 </html>
