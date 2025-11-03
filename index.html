@@ -15,12 +15,6 @@
             --sun-yellow: #ffd54f;
             --horizon-orange: #ff8a65;
             --accent-teal: #26c6da;
-            --level-0: #78909c;
-            --level-1: #42a5f5;
-            --level-2: #66bb6a;
-            --level-3: #ffa726;
-            --level-4: #ff7043;
-            --level-5: #ef5350;
         }
         
         body {
@@ -205,12 +199,12 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
         }
         
-        .level-0 { background: linear-gradient(135deg, var(--level-0), #546e7a); }
-        .level-1 { background: linear-gradient(135deg, var(--level-1), #1e88e5); }
-        .level-2 { background: linear-gradient(135deg, var(--level-2), #43a047); }
-        .level-3 { background: linear-gradient(135deg, var(--level-3), #fb8c00); }
-        .level-4 { background: linear-gradient(135deg, var(--level-4), #f4511e); }
-        .level-5 { background: linear-gradient(135deg, var(--level-5), #e53935); }
+        .level-0 { background: linear-gradient(135deg, #78909c, #546e7a); }
+        .level-1 { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
+        .level-2 { background: linear-gradient(135deg, #66bb6a, #43a047); }
+        .level-3 { background: linear-gradient(135deg, #ffa726, #fb8c00); }
+        .level-4 { background: linear-gradient(135deg, #ff7043, #f4511e); }
+        .level-5 { background: linear-gradient(135deg, #ef5350, #e53935); }
         
         .score-display {
             font-size: 2.5rem;
@@ -373,61 +367,15 @@
             font-style: italic;
         }
         
-        /* 一体化等级和评分说明样式 */
-        .level-guideline-container {
-            display: flex;
-            align-items: stretch;
-            margin-top: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            background: white;
-        }
-        
         .current-level {
-            flex: 0 0 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 10px;
-            color: white;
             font-weight: bold;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .current-level::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-        }
-        
-        .level-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-        
-        .level-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .level-guideline {
-            flex: 1;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            display: flex;
-            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .subcategory {
@@ -497,6 +445,28 @@
             border-bottom: none;
         }
         
+        /* 新增：三级指标等级说明样式 */
+        .level-explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-teal);
+            font-size: 0.85rem;
+            color: #555;
+            display: none;
+        }
+        
+        .level-explanation.show {
+            display: block;
+        }
+        
+        .level-explanation-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--sky-dark);
+        }
+        
         /* 飞行元素装饰 */
         .flying-element {
             position: absolute;
@@ -529,8 +499,8 @@
         }
         
         @keyframes fly {
-            0% { transform: translateX(100vw) rotate(0deg); }
-            100% { transform: translateX(-100vw) rotate(5deg); }
+            0% { transform: translateX(-100px) rotate(0deg); }
+            100% { transform: translateX(100vw) rotate(5deg); }
         }
         
         @keyframes float {
@@ -558,6 +528,24 @@
             display: inline-block;
         }
         
+        .export-btn {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
         @media (max-width: 768px) {
             .nav-tabs .nav-link {
                 padding: 10px 15px;
@@ -570,27 +558,6 @@
             
             .flying-element {
                 display: none;
-            }
-            
-            .level-guideline-container {
-                flex-direction: column;
-            }
-            
-            .current-level {
-                flex: 0 0 auto;
-                padding: 10px;
-                flex-direction: row;
-                justify-content: flex-start;
-            }
-            
-            .level-number {
-                font-size: 1.5rem;
-                margin-right: 10px;
-                margin-bottom: 0;
-            }
-            
-            .level-name {
-                font-size: 0.85rem;
             }
         }
     </style>
@@ -623,10 +590,10 @@
                         <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> 首页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-info-circle me-1"></i> 使用说明</a>
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#instructionsModal"><i class="fas fa-info-circle me-1"></i> 使用说明</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="export-results"><i class="fas fa-download me-1"></i> 导出结果</a>
+                        <a class="nav-link" href="#" id="export-link"><i class="fas fa-download me-1"></i> 导出结果</a>
                     </li>
                 </ul>
             </div>
@@ -698,16 +665,10 @@
                                             <div class="indicator-description">
                                                 企业直接部署的数字化生产设备或完成数字化改造的生产设备占所有生产设备的比重
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="device-popularization-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="device-popularization-guideline">
-                                                    企业尚未部署任何数字化生产设备，所有生产设备均为传统设备
-                                                </div>
+                                            <div class="current-level level-0" id="device-popularization-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="device-popularization-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="device-popularization-explanation-text">企业尚未开展数字化转型。</div>
                                             </div>
                                         </div>
                                         
@@ -720,16 +681,10 @@
                                             <div class="indicator-description">
                                                 企业已联网的数字化生产设备占所有数字化生产设备的比重
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="device-networking-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="device-networking-guideline">
-                                                    数字化生产设备未实现联网，设备独立运行
-                                                </div>
+                                            <div class="current-level level-0" id="device-networking-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="device-networking-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="device-networking-explanation-text">企业尚未开展数字化转型。</div>
                                             </div>
                                         </div>
                                         
@@ -742,16 +697,10 @@
                                             <div class="indicator-description">
                                                 企业关键工序中过程控制系统或数据系统的覆盖率
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="process-digitalization-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="process-digitalization-guideline">
-                                                    关键工序完全依赖人工操作，无数控化设备
-                                                </div>
+                                            <div class="current-level level-0" id="process-digitalization-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="process-digitalization-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="process-digitalization-explanation-text">企业所有信息均存储在个人设备，未进行共享或在线协作。</div>
                                             </div>
                                         </div>
                                         
@@ -768,16 +717,10 @@
                                             <div class="indicator-description">
                                                 企业运用云服务（私有云、公有云、混合云等）进行数据管理和业务协同的情况
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="cloud-usage-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="cloud-usage-guideline">
-                                                    企业未使用任何云服务，所有数据和应用均在本地部署
-                                                </div>
+                                            <div class="current-level level-0" id="cloud-usage-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="cloud-usage-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="cloud-usage-explanation-text">企业所有信息均存储在个人设备，未进行共享或在线协作。</div>
                                             </div>
                                         </div>
                                         
@@ -790,16 +733,10 @@
                                             <div class="indicator-description">
                                                 企业数据采集、存储、处理和应用的能力水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="data-capability-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="data-capability-guideline">
-                                                    企业尚未建立数据采集和应用体系，数据分散且无法有效利用
-                                                </div>
+                                            <div class="current-level level-0" id="data-capability-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="data-capability-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="data-capability-explanation-text">企业生产过程中关键环节数据整合分布，尚未应用能力。</div>
                                             </div>
                                         </div>
                                         
@@ -816,16 +753,10 @@
                                             <div class="indicator-description">
                                                 企业网络和数据安全防护措施及管理规范的实施情况
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="security-capability-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="security-capability-guideline">
-                                                    企业未建立网络安全防护体系，缺乏基本的安全管理措施
-                                                </div>
+                                            <div class="current-level level-0" id="security-capability-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="security-capability-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="security-capability-explanation-text">企业尚未接入网络或应用局域网开展业务，基本没有部署防火墙、杀毒软件等基础网络安全防护措施，内部尚未形成网络安全管理规范。</div>
                                             </div>
                                         </div>
                                     </div>
@@ -845,16 +776,10 @@
                                             <div class="indicator-description">
                                                 企业产品设计过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="product-design-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="product-design-guideline">
-                                                    产品设计完全依赖手工绘图和纸质文档管理
-                                                </div>
+                                            <div class="current-level level-0" id="product-design-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="product-design-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="product-design-explanation-text">企业以传统手工方式绘制产品图纸与设计产品参数，以纸质文档方式管理产品相关的信息。</div>
                                             </div>
                                         </div>
                                         
@@ -867,16 +792,10 @@
                                             <div class="indicator-description">
                                                 企业工艺设计过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="process-design-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="process-design-guideline">
-                                                    工艺设计完全依赖手工制作和纸质文档管理
-                                                </div>
+                                            <div class="current-level level-0" id="process-design-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="process-design-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="process-design-explanation-text">企业以传统手工方式制作工艺流程，以纸质文档方式管理工艺参数相关的信息。</div>
                                             </div>
                                         </div>
                                         
@@ -893,16 +812,10 @@
                                             <div class="indicator-description">
                                                 企业生产计划制定和执行的数字化水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="production-planning-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="production-planning-guideline">
-                                                    生产计划高度依赖人工计算和纸质安排
-                                                </div>
+                                            <div class="current-level level-0" id="production-planning-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="production-planning-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="production-planning-explanation-text">企业生产计划指挥高度依赖人工，主要生产批次主要由人工计算并下放纸质安排计划。</div>
                                             </div>
                                         </div>
                                         
@@ -913,18 +826,12 @@
                                                 <div class="slider-value" id="production-operation-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业生产作业过程中自动化、数字化技术的应用水平
+                                                企业生产作业过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="production-operation-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="production-operation-guideline">
-                                                    生产作业高度依赖人工操作，关键生产作业环节未实现自动化
-                                                </div>
+                                            <div class="current-level level-0" id="production-operation-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="production-operation-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="production-operation-explanation-text">企业生产设备操作高度依赖人工，关键生产作业环节未实现自动化。</div>
                                             </div>
                                         </div>
                                         
@@ -935,18 +842,12 @@
                                                 <div class="slider-value" id="quality-control-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业质量管理过程中数字化工具和系统的应用水平
+                                                企业质量控制过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="quality-control-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="quality-control-guideline">
-                                                    通过人工取样、送检，或经验判断等方式开展质量管理和检测
-                                                </div>
+                                            <div class="current-level level-0" id="quality-control-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="quality-control-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="quality-control-explanation-text">企业通过人工取样、送检，或经验判断等方式开展质量管理和检测。</div>
                                             </div>
                                         </div>
                                         
@@ -957,18 +858,12 @@
                                                 <div class="slider-value" id="warehouse-logistics-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业仓储物流管理过程中数字化工具和系统的应用水平
+                                                企业仓储物流过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="warehouse-logistics-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="warehouse-logistics-guideline">
-                                                    通过纸质方式开展仓储物料记录盘点
-                                                </div>
+                                            <div class="current-level level-0" id="warehouse-logistics-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="warehouse-logistics-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="warehouse-logistics-explanation-text">企业通过纸质方式开展仓储物料记录盘点。</div>
                                             </div>
                                         </div>
                                         
@@ -981,16 +876,10 @@
                                             <div class="indicator-description">
                                                 企业设备管理过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="equipment-management-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="equipment-management-guideline">
-                                                    通过人工观察、手动测试的方式开展设备管理，无定期设备维护计划
-                                                </div>
+                                            <div class="current-level level-0" id="equipment-management-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="equipment-management-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="equipment-management-explanation-text">通过人工观察、手动测试的方式开展设备管理，无定期设备维护计划。</div>
                                             </div>
                                         </div>
                                         
@@ -1003,16 +892,10 @@
                                             <div class="indicator-description">
                                                 企业安全生产管理过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="safety-management-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="safety-management-guideline">
-                                                    通过人工巡查、手动测试的方式开展安全生产管理，仅开展线下的普适性安全知识培训
-                                                </div>
+                                            <div class="current-level level-0" id="safety-management-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="safety-management-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="safety-management-explanation-text">通过人工巡查、手动测试的方式开展安全生产管理，仅开展线下的普适性安全知识培训。</div>
                                             </div>
                                         </div>
                                         
@@ -1025,16 +908,10 @@
                                             <div class="indicator-description">
                                                 企业环保管理过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="environmental-management-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="environmental-management-guideline">
-                                                    尚未开展任何数字化应用，按需通过人工采集、手动记录
-                                                </div>
+                                            <div class="current-level level-0" id="environmental-management-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="environmental-management-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="environmental-management-explanation-text">尚未开展任何数字化应用，按需通过人工采集、手动记录。</div>
                                             </div>
                                         </div>
                                         
@@ -1047,21 +924,15 @@
                                             <div class="indicator-description">
                                                 企业能源管理过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="energy-management-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="energy-management-guideline">
-                                                    尚未开展任何数字化应用，按需通过人工采集、手动记录
-                                                </div>
+                                            <div class="current-level level-0" id="energy-management-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="energy-management-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="energy-management-explanation-text">尚未开展任何数字化应用，按需通过人工采集、手动记录。</div>
                                             </div>
                                         </div>
                                         
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-shopping-cart me-2"></i>采购供应 (10%)</h5>
+                                            <h5><i class="fas fa-truck-loading me-2"></i>采购供应 (10%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
@@ -1073,21 +944,15 @@
                                             <div class="indicator-description">
                                                 企业采购供应过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="procurement-supply-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="procurement-supply-guideline">
-                                                    采用纸质文档进行采购、销售、仓储等的人工盘点，未使用数字化工具
-                                                </div>
+                                            <div class="current-level level-0" id="procurement-supply-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="procurement-supply-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="procurement-supply-explanation-text">企业采用纸质文档进行采购、销售、仓储等的人工盘点，未使用数字化工具。</div>
                                             </div>
                                         </div>
                                         
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-chart-line me-2"></i>营销管理 (10%)</h5>
+                                            <h5><i class="fas fa-shopping-cart me-2"></i>营销管理 (10%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
@@ -1099,21 +964,15 @@
                                             <div class="indicator-description">
                                                 企业营销管理过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="marketing-management-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="marketing-management-guideline">
-                                                    采用纸质化、经验化等方式在办公、财务、采购、人力等领域进行经营管理，未使用数字化工具
-                                                </div>
+                                            <div class="current-level level-0" id="marketing-management-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="marketing-management-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="marketing-management-explanation-text">企业采用纸质化、经验化等方式在办公、财务、采购、人力等领域进行经营管理，未使用数字化工具。</div>
                                             </div>
                                         </div>
                                         
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-cube me-2"></i>产品服务 (12%)</h5>
+                                            <h5><i class="fas fa-concierge-bell me-2"></i>产品服务 (12%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
@@ -1125,16 +984,10 @@
                                             <div class="indicator-description">
                                                 企业产品服务过程中数字化工具和系统的应用水平
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="product-service-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="product-service-guideline">
-                                                    单纯使用纸质形式进行产品服务，未使用数字化工具
-                                                </div>
+                                            <div class="current-level level-0" id="product-service-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="product-service-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="product-service-explanation-text">企业单纯使用纸质形式进行产品服务，未使用数字化工具。</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1142,28 +995,22 @@
                                     <!-- 数字化管理 -->
                                     <div class="tab-pane fade" id="management" role="tabpanel">
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-chess-queen me-2"></i>经营战略 (15%)</h5>
+                                            <h5><i class="fas fa-chess-king me-2"></i>经营战略 (15%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
                                             <label class="form-label fw-bold">数字化认知及规划实施情况 (100%)</label>
                                             <div class="slider-container">
-                                                <input type="range" class="form-range" min="0" max="100" id="digital-strategy">
-                                                <div class="slider-value" id="digital-strategy-value">0</div>
+                                                <input type="range" class="form-range" min="0" max="100" id="strategy-implementation">
+                                                <div class="slider-value" id="strategy-implementation-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化战略规划及实施情况
+                                                企业对数字化转型的认知程度以及规划实施情况
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="digital-strategy-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="digital-strategy-guideline">
-                                                    对数字化未作了解，未考虑任何数字化转型目标或规划
-                                                </div>
+                                            <div class="current-level level-0" id="strategy-implementation-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="strategy-implementation-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="strategy-implementation-explanation-text">对数字化未作了解，未考虑任何数字化转型目标或规划。</div>
                                             </div>
                                         </div>
                                         
@@ -1178,18 +1025,12 @@
                                                 <div class="slider-value" id="management-mechanism-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化管理机制建设情况
+                                                企业数字化管理机制的建立和完善情况
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="management-mechanism-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="management-mechanism-guideline">
-                                                    尚无数字化管理制度且无设立计划
-                                                </div>
+                                            <div class="current-level level-0" id="management-mechanism-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="management-mechanism-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="management-mechanism-explanation-text">尚无数字化管理制度且无设立计划。</div>
                                             </div>
                                         </div>
                                         
@@ -1200,22 +1041,16 @@
                                         <div class="indicator-item">
                                             <label class="form-label fw-bold">数字化人才配置情况 (100%)</label>
                                             <div class="slider-container">
-                                                <input type="range" class="form-range" min="0" max="100" id="talent-development">
-                                                <div class="slider-value" id="talent-development-value">0</div>
+                                                <input type="range" class="form-range" min="0" max="100" id="talent-configuration">
+                                                <div class="slider-value" id="talent-configuration-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化人才队伍建设情况
+                                                企业数字化人才的配置和培养情况
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="talent-development-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="talent-development-guideline">
-                                                    未配备任何数字化人才
-                                                </div>
+                                            <div class="current-level level-0" id="talent-configuration-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="talent-configuration-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="talent-configuration-explanation-text">未配备任何数字化人才。</div>
                                             </div>
                                         </div>
                                         
@@ -1226,22 +1061,16 @@
                                         <div class="indicator-item">
                                             <label class="form-label fw-bold">数字化资金投入情况 (100%)</label>
                                             <div class="slider-container">
-                                                <input type="range" class="form-range" min="0" max="100" id="funding">
-                                                <div class="slider-value" id="funding-value">0</div>
+                                                <input type="range" class="form-range" min="0" max="100" id="funding-investment">
+                                                <div class="slider-value" id="funding-investment-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化资金投入情况
+                                                企业数字化资金投入的情况和比例
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="funding-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="funding-guideline">
-                                                    企业近三年未进行数字化相关投入
-                                                </div>
+                                            <div class="current-level level-0" id="funding-investment-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="funding-investment-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="funding-investment-explanation-text">企业近三年未进行数字化相关投入。</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1249,7 +1078,7 @@
                                     <!-- 数字化成效 -->
                                     <div class="tab-pane fade" id="results" role="tabpanel">
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-medal me-2"></i>产品质量 (25%)</h5>
+                                            <h5><i class="fas fa-award me-2"></i>产品质量 (25%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
@@ -1259,18 +1088,12 @@
                                                 <div class="slider-value" id="product-quality-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                实施智能数据转化后企业核心产品合格率提升幅度
+                                                实施智能化改造后企业核心产品合格率的提升幅度
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="product-quality-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="product-quality-guideline">
-                                                    产品合格率提升幅度≤0
-                                                </div>
+                                            <div class="current-level level-0" id="product-quality-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="product-quality-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="product-quality-explanation-text">提升幅度≤0。</div>
                                             </div>
                                         </div>
                                         
@@ -1285,23 +1108,17 @@
                                                 <div class="slider-value" id="production-efficiency-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                实施智能数据转化后企业综合生产效率提升幅度
+                                                实施智能化改造后企业综合生产效率的提升幅度
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="production-efficiency-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="production-efficiency-guideline">
-                                                    生产效率提升幅度≤0
-                                                </div>
+                                            <div class="current-level level-0" id="production-efficiency-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="production-efficiency-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="production-efficiency-explanation-text">提升幅度≤0。</div>
                                             </div>
                                         </div>
                                         
                                         <div class="subcategory">
-                                            <h5><i class="fas fa-chart-bar me-2"></i>价值效益 (25%)</h5>
+                                            <h5><i class="fas fa-chart-line me-2"></i>价值效益 (25%)</h5>
                                         </div>
                                         
                                         <div class="indicator-item">
@@ -1311,18 +1128,12 @@
                                                 <div class="slider-value" id="value-benefit-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业目前（改造后）每百元营业收入中的成本相比于改造前降低幅度
+                                                企业目前每百元营业收入中的成本相比于改造前的降低幅度
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="value-benefit-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="value-benefit-guideline">
-                                                    成本降低幅度≤0
-                                                </div>
+                                            <div class="current-level level-0" id="value-benefit-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="value-benefit-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="value-benefit-explanation-text">降低幅度≤0。</div>
                                             </div>
                                         </div>
                                         
@@ -1337,18 +1148,12 @@
                                                 <div class="slider-value" id="green-low-carbon-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业暂改数转后每万元营业收入中综合能源消费量相比于改造前降低幅度
+                                                企业每万元营业收入中综合能源消费量相比于改造前的降低幅度
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="green-low-carbon-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="green-low-carbon-guideline">
-                                                    能耗成本降低幅度≤0
-                                                </div>
+                                            <div class="current-level level-0" id="green-low-carbon-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="green-low-carbon-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="green-low-carbon-explanation-text">降低幅度≤0。</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1366,18 +1171,12 @@
                                                 <div class="slider-value" id="security-controllable-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                采用本土化设备、系统、产品、工具等的比例
+                                                采用本土化设备、系统、产品、工具等的比例，在技术和产品领域具备完全的本土化掌控能力
                                             </div>
-                                            
-                                            <!-- 一体化等级和评分说明 -->
-                                            <div class="level-guideline-container">
-                                                <div class="current-level level-0" id="security-controllable-level">
-                                                    <div class="level-number">L0</div>
-                                                    <div class="level-name">尚未实施</div>
-                                                </div>
-                                                <div class="level-guideline" id="security-controllable-guideline">
-                                                    安全可控比例=0%
-                                                </div>
+                                            <div class="current-level level-0" id="security-controllable-level">L0 尚未实施</div>
+                                            <div class="level-explanation" id="security-controllable-explanation">
+                                                <div class="level-explanation-title">当前等级说明：</div>
+                                                <div id="security-controllable-explanation-text">安全可控比例=0%。</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1398,6 +1197,9 @@
                         <div class="total-grade" id="grade">L0 尚未实施</div>
                         <button class="btn btn-reset" onclick="resetScores()">
                             <i class="fas fa-redo me-2"></i> 重置所有分数
+                        </button>
+                        <button class="btn export-btn" id="export-pdf">
+                            <i class="fas fa-file-pdf me-2"></i> 导出PDF报告
                         </button>
                     </div>
                     
@@ -1571,355 +1373,319 @@
         </div>
     </div>
 
+    <!-- 使用说明模态框 -->
+    <div class="modal fade" id="instructionsModal" tabindex="-1" aria-labelledby="instructionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="instructionsModalLabel"><i class="fas fa-info-circle me-2"></i>系统使用说明</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>评价系统概述</h5>
+                    <p>本系统基于四川省制造业智能化改造数字化转型评价指标体系，帮助企业评估自身的数字化转型水平。</p>
+                    
+                    <h5>使用步骤</h5>
+                    <ol>
+                        <li>通过左侧选项卡选择评价类别（数字化基础、数字化生产经营、数字化管理、数字化成效、加分项）</li>
+                        <li>在每个三级指标下方拖动滑块进行评分（0-100分）</li>
+                        <li>系统会实时计算总分和等级</li>
+                        <li>点击右侧一级指标可以查看二级指标得分详情</li>
+                        <li>点击"重置所有分数"可以重新开始评价</li>
+                        <li>点击"导出PDF报告"可以生成评价报告</li>
+                    </ol>
+                    
+                    <h5>等级说明</h5>
+                    <p>系统根据总分将企业数字化转型水平分为6个等级：</p>
+                    <ul>
+                        <li><strong>L0 尚未实施 [0-10)</strong>：企业尚未开展数字化转型</li>
+                        <li><strong>L1 起步建设 [10-20)</strong>：企业开始对数字化转型进行规划</li>
+                        <li><strong>L2 单项应用 [20-40)</strong>：企业实现单一业务环节的数字化转型</li>
+                        <li><strong>L3 综合集成 [40-60)</strong>：企业实现跨业务环节的数据共享</li>
+                        <li><strong>L4 协同优化 [60-80)</strong>：企业强化全流程数据贯通</li>
+                        <li><strong>L5 智能引领 [80-105]</strong>：企业实现全链条全业务全环节的优化和创新</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        // 定义所有指标的评分说明
-        const guidelines = {
-            'device-popularization': {
-                0: '企业尚未部署任何数字化生产设备，所有生产设备均为传统设备',
-                1: '数字化生产设备占比低于10%，仅有个别设备完成数字化改造',
-                2: '数字化生产设备占比10%-40%，关键工序设备完成数字化改造',
-                3: '数字化生产设备占比40%-60%，主要生产环节实现数字化覆盖',
-                4: '数字化生产设备占比60%-80%，生产设备基本完成数字化改造',
-                5: '数字化生产设备占比超过80%，形成完整的数字化生产设备体系'
-            },
-            'device-networking': {
-                0: '数字化生产设备未实现联网，设备独立运行',
-                1: '少量数字化设备实现基础联网，联网率低于20%',
-                2: '关键数字化设备实现联网，联网率达到20%-40%',
-                3: '主要数字化设备实现联网和数据采集，联网率达到40%-60%',
-                4: '大部分数字化设备实现联网和集中管控，联网率达到60%-80%',
-                5: '所有数字化设备实现全面联网和智能管控，联网率超过80%'
-            },
-            'process-digitalization': {
-                0: '关键工序完全依赖人工操作，无数控化设备',
-                1: '少量关键工序实现数控化，数控化率低于20%',
-                2: '部分关键工序实现数控化，数控化率达到20%-40%',
-                3: '主要关键工序实现数控化，数控化率达到40%-60%',
-                4: '大部分关键工序实现数控化，数控化率达到60%-80%',
-                5: '所有关键工序全面实现数控化，数控化率超过80%'
-            },
-            'cloud-usage': {
-                0: '企业未使用任何云服务，所有数据和应用均在本地部署',
-                1: '企业开始尝试使用基础云服务，如云存储、云备份等',
-                2: '企业部分非核心业务系统上云，实现基础云服务应用',
-                3: '企业核心业务系统上云，实现跨部门数据共享和业务协同',
-                4: '企业全面上云，实现产业链上下游数据协同和业务优化',
-                5: '企业构建云原生架构，实现智能化决策和业务创新'
-            },
-            'data-capability': {
-                0: '企业尚未建立数据采集和应用体系，数据分散且无法有效利用',
-                1: '企业开始尝试数据采集，但数据质量和完整性较差',
-                2: '企业建立基础数据采集体系，能够进行简单的数据分析',
-                3: '企业实现多源数据整合，能够进行跨部门数据分析和应用',
-                4: '企业建立数据中台，实现数据驱动业务决策和优化',
-                5: '企业构建智能数据体系，实现数据驱动的智能决策和创新'
-            },
-            'security-capability': {
-                0: '企业未建立网络安全防护体系，缺乏基本的安全管理措施',
-                1: '企业部署基础网络安全设备，具备初步的安全防护能力',
-                2: '企业建立网络安全管理制度，实现关键系统的安全防护',
-                3: '企业构建全面的网络安全体系，实现安全事件的快速响应',
-                4: '企业建立主动安全防御体系，能够预测和防范安全威胁',
-                5: '企业构建智能安全防护体系，实现安全态势的实时感知和自动响应'
-            },
-            'product-design': {
-                0: '产品设计完全依赖手工绘图和纸质文档管理',
-                1: '企业采用电子文档等方式初步开展产品设计数据的文档化管理',
-                2: '基于计算机辅助开展产品设计，如使用CAD、EDA等软件',
-                3: '部署实施产品数据管理（PDM）/产品生命周期管理（PLM）类系统',
-                4: '企业开始积累沉淀设计组件库或工艺知识库，能够进行产品功能、性能仿真分析',
-                5: '企业打造产品数字孪生，以高精度、高保真的虚拟实验替代传统实物验证过程'
-            },
-            'process-design': {
-                0: '工艺设计完全依赖手工制作和纸质文档管理',
-                1: '企业采用电子文档等方式初步开展工艺设计数据的文档化管理',
-                2: '企业建立工艺文档和数据的管理机制，使用CAPP等软件开展工艺设计及优化',
-                3: '企业能够熟练运用工艺设计工具，基于工艺设计、生产、检验等系统集成',
-                4: '企业能够构建工艺知识库和行业工艺包等，实现工艺设计快速迭代优化',
-                5: '企业能够基于设计、工艺、生产、检验、运维等数据，应用工艺自动化、人工智能等技术'
-            },
-            'production-planning': {
-                0: '生产计划高度依赖人工计算和纸质安排',
-                1: '通过信息系统（或计算机）实现具有约束条件的主生产计划生产和物料需求计算',
-                2: '企业应用MES系统等专业工业软件开展可视化、精益化生产管理',
-                3: '企业建设智能管理系统，主要产品车间生产计划均实现自动排序',
-                4: '企业建设智能管理系统，应用复杂的优化、多目标规划、强化学习等技术',
-                5: '全部车间生产计划实现自动排序，并将自动排序系统与采购、生产、销售等环节进行数据协同'
-            },
-            'production-operation': {
-                0: '生产设备操作高度依赖人工，关键生产作业环节未实现自动化',
-                1: '企业开展关键生产工序自动化改造，实现部分生产作业环节的自动化',
-                2: '企业规模化推动"哑"设备数字化改造升级，50%以上设备实现数据采集上传和互联互通',
-                3: '企业基于设备数据采集和网络化连接实现不同生产工序之间的自动衔接和集中控制',
-                4: '企业能够进行生产工艺和流程的自动切换，实现混线柔性生产',
-                5: '企业集成机器人、高端机床或人机交互等智能装备，应用人工智能、数字孪生、工业元宇宙等技术'
-            },
-            'quality-control': {
-                0: '通过人工取样、送检，或经验判断等方式开展质量管理和检测',
-                1: '企业使用基本的质量管理系统软件，具备一定实时监控和自动化检测设备',
-                2: '企业应用数字化技术和装备，实现关键环节的在线检测、分析、结果判定',
-                3: '企业应用数字化技术，采集产品原料、生产过程、客户使用的质量信息，实现产品质量全过程精准追溯',
-                4: '企业构建在线智能检测系统，应用智能检测、物性表征分析、机器视觉识别、参数放行等技术',
-                5: '企业利用数字化手段实现质量控制与相关业务的协同，并应用机理分析、深度学习预测等技术'
-            },
-            'warehouse-logistics': {
-                0: '通过纸质方式开展仓储物料记录盘点',
-                1: '企业部分数据已实现电子化记录，实时库存监控已覆盖部分重点区域',
-                2: '企业开展物料识别标识管理，基于统一条码、射频识别技术等进行基本的数据采集和管理',
-                3: '企业应用制造执行系统（MES）或仓储管理系统（WMS），实现原材料、仓储品类产品流转的全程跟踪',
-                4: '企业应用数字化技术，依据实际生产作业计划，实现物料和成品出入库、存储、挑选的智能化',
-                5: '企业全面实现实时库存监控、动态调度和高度自动化作业，并依托运输管理系统实现运输配送全程跟踪或异常预警'
-            },
-            'equipment-management': {
-                0: '通过人工观察、手动测试的方式开展设备管理，无定期设备维护计划',
-                1: '应用人工手持仪器开展设备点巡检，制定设备维护计划，实现对设备设施的维护保养预警',
-                2: '建立设备管理系统，实现设备点巡检、维护保养等状态的过程管理',
-                3: '实现设备关键运行参数实时采集、依据关键运行参数等，实现设备综合效率统计及故障报警',
-                4: '建立设备故障知识库，与设备管理系统集成，并自动生成检修工单',
-                5: '基于机器学习、神经网络等建立设备运行模型，实现自动驱动工艺优化和生产作业计划优化'
-            },
-            'safety-management': {
-                0: '通过人工巡查、手动测试的方式开展安全生产管理，仅开展线下的普适性安全知识培训',
-                1: '利用数字技术对安全管理基础信息进行管理、实现风险分级动态管控和隐患排查闭环管理',
-                2: '完成对现场危险源感知预警、实现事故事件报警的及时推送与快速处置',
-                3: '对安全设备进行运行监测，建立了封闭管理、特殊作业管理、智能巡检、人员定位等专业化系统',
-                4: '采用数字孪生技术应用于安全生产管理，建立基于知识图谱的安全生产数据平台',
-                5: '采用人工智能技术，实现涉危作业的无人化作业；通过安全生产工艺机理模型，实现自动化过程优化控制'
-            },
-            'environmental-management': {
-                0: '尚未开展任何数字化应用，按需通过人工采集、手动记录',
-                1: '使用简单的电子表格或数据库进行初步数据管理，环保数据可采集记录',
-                2: '环保管理系统全面电子化并通过网络集中管理，主要区域实现实施监控',
-                3: '实现从清洁生产到未端治理全过程环保数据采集、实时监控和报警',
-                4: '实现环保监测数据和生产作业的集成分析，开展排放分析和预测预警',
-                5: '实现环保、生产、设备等数据全面实时监控，应用数据分析模型追踪产品全生命周期精准碳排放'
-            },
-            'energy-management': {
-                0: '尚未开展任何数字化应用，按需通过人工采集、手动记录',
-                1: '通过信息化手段，对主要能源产生、重点能源消耗点进行动态监测和计量',
-                2: '可以对高耗能设备能耗实现数据实时统计和分析，并制定能耗评价指标',
-                3: '有节能优化需求的设备开展实时计量，并根据能效评估结果，进行节能改造',
-                4: '建立能源管理系统，对能源输送、存储、转化、使用等环节进行全面监控',
-                5: '建立节能模型，实现能源精细、可视化管理和能源的动态预测和平衡，并指导生产'
-            },
-            'procurement-supply': {
-                0: '采用纸质文档进行采购、销售、仓储等的人工盘点，未使用数字化工具',
-                1: '能够通过轻量化工具实现采购计划管理、过程管理和供应商管理',
-                2: '建设供应链管理系统（SCM），融合数字化技术，实现供应链可视化监控',
-                3: '集成数字化技术，实现库存信息与采购信息过滤，能够基于物料消耗情况发起采购需求',
-                4: '构建工业互联网等数字化平台，建立多级供应商管理体系',
-                5: '与上下游企业在产品设计、生产作业、质量管控、物流运输、绿色低碳等某个或多个领域开展深度协同'
-            },
-            'marketing-management': {
-                0: '采用纸质化、经验化等方式在办公、财务、采购、人力等领域进行经营管理，未使用数字化工具',
-                1: '企业已开展一些基本的信息技术应用，比如简单的电子表格或电话、邮件营销',
-                2: '企业运用小程序等轻量化软件工具辅助开展基本营销、售后管理',
-                3: '企业开始采用更专业的营销工具和软件，如CRM系统，集成数字化技术',
-                4: '企业实现不同系统之间的数据互通，支持更复杂的营销活动管理和数据分析',
-                5: '企业能够利用高数数据分析、人工智能等技术进行预测分析、个性化营销'
-            },
-            'product-service': {
-                0: '单纯使用纸质形式进行产品服务，未使用数字化工具',
-                1: '企业主要以电子表格等非纸质形式记录产品服务报告',
-                2: '企业通过OA、ERP或销售系统等平台搭建表单流程进行信息记录',
-                3: '企业搭建移动端连接服务，客户能够通过数字化终端实现提供货、质量管理等自动化',
-                4: '依托客户关系管理系统，集成数字化技术，实现精细化管理或主动式客户服务',
-                5: '企业利用人工智能、大数据分析等来优化服务，实现用户和企业的深度交互'
-            },
-            'digital-strategy': {
-                0: '对数字化未作了解，未考虑任何数字化转型目标或规划',
-                1: '已经主动了解数字化相关内容，对数字化转型的意义有较为深刻的认识',
-                2: '主动去数字化建设成效较好的同行业公司参观交流，学习数字化转型方案',
-                3: '已经对数字化转型有了明确的目标，并制定了数字化转型规划及具体的实施计划',
-                4: '已经基于规划着手开始进行单点或多点的数字化改造',
-                5: '已基于战略规划开展业务模式和管理决策方式的变革实践并取得成效'
-            },
-            'management-mechanism': {
-                0: '尚无数字化管理制度且无设立计划',
-                1: '建立数字化转型实施工作流程',
-                2: '设立了数字化职能部门，赋予其足够的权限来推进相关工作',
-                3: '建立信息系统建设及运营管理制度',
-                4: '建立了数据资源管理制度',
-                5: '明确数字化职能部门在企业战略中的定位和工作重点，建立与数字化融合的科研、业务、产品等方面的创新激励制度'
-            },
-            'talent-development': {
-                0: '未配备任何数字化人才',
-                1: '配备专职/兼职的数字化人才',
-                2: '建立了专门的数字化人才队伍',
-                3: '有明确的数字化人才绩效及薪酬管理制度',
-                4: '设立了首席数据官（CDO）',
-                5: '为员工提供定期的数字化技能培训课程，帮助他们掌握最新的工具和技术'
-            },
-            'funding': {
-                0: '企业近三年未进行数字化相关投入',
-                1: '企业近三年平均数字化投入占营业收入比重（0-0.3%）',
-                2: '企业近三年平均数字化投入占营业收入比重（0.3%-3%）',
-                3: '企业近三年平均数字化投入占营业收入比重（3%-6%）',
-                4: '企业近三年平均数字化投入占营业收入比重（6%-9%）',
-                5: '企业近三年平均数字化投入占营业收入比重（≥9%）'
-            },
-            'product-quality': {
-                0: '产品合格率提升幅度≤0',
-                1: '产品合格率提升（0，1.2%）',
-                2: '产品合格率提升[1.2%-2.4%]',
-                3: '产品合格率提升[2.4%-3.6%]',
-                4: '产品合格率提升[3.6%-4.8%]',
-                5: '产品合格率提升[≥4.8%]'
-            },
-            'production-efficiency': {
-                0: '生产效率提升幅度≤0',
-                1: '生产效率提升（0，6%）',
-                2: '生产效率提升[6%-12%]',
-                3: '生产效率提升[12%-18%]',
-                4: '生产效率提升[18%-24%]',
-                5: '生产效率提升[≥24%]'
-            },
-            'value-benefit': {
-                0: '成本降低幅度≤0',
-                1: '成本降低（0，4%）',
-                2: '成本降低[4%-8%]',
-                3: '成本降低[8%-12%]',
-                4: '成本降低[12%-16%]',
-                5: '成本降低[≥16%]'
-            },
-            'green-low-carbon': {
-                0: '能耗成本降低幅度≤0',
-                1: '能耗成本降低（0，4%）',
-                2: '能耗成本降低[4%-8%]',
-                3: '能耗成本降低[8%-12%]',
-                4: '能耗成本降低[12%-16%]',
-                5: '能耗成本降低[≥16%]'
-            },
-            'security-controllable': {
-                0: '安全可控比例=0%',
-                1: '安全可控比例（0%，20%）',
-                2: '安全可控比例[20%-40%]',
-                3: '安全可控比例[40%-60%]',
-                4: '安全可控比例[60%-80%]',
-                5: '安全可控比例[≥80%]'
-            }
+        // 为每个三级指标定义等级说明
+        const levelExplanations = {
+            'device-popularization': [
+                "企业尚未开展数字化转型。",
+                "企业开始对数字化转型进行规划，具备基础的数字化转型水平和条件，对核心业务信息数字化管理。",
+                "企业采用自动化技术、信息技术手段对核心装备和业务环节进行改造和规范，实现单一业务环节的数字化转型。",
+                "企业对装备、系统等启动创新集成，实现跨业务环节的数据共享，从单一环节优化走向多流程数字化协同。",
+                "企业进一步强化全流程数据贯通，加快产业链业务数字化协同，对关键业务环节进行数据挖掘。",
+                "将数字孪生、人工智能、物联网、大数据分析等技术组合融入传统制造业，实现人机物的互联互通。"
+            ],
+            'device-networking': [
+                "企业尚未开展数字化转型。",
+                "企业开始对数字化转型进行规划，具备基础的数字化转型水平和条件，对核心业务信息数字化管理。",
+                "企业采用自动化技术、信息技术手段对核心装备和业务环节进行改造和规范，实现单一业务环节的数字化转型。",
+                "企业对装备、系统等启动创新集成，实现跨业务环节的数据共享，从单一环节优化走向多流程数字化协同。",
+                "企业进一步强化全流程数据贯通，加快产业链业务数字化协同，对关键业务环节进行数据挖掘。",
+                "将数字孪生、人工智能、物联网、大数据分析等技术组合融入传统制造业，实现人机物的互联互通。"
+            ],
+            'process-digitalization': [
+                "企业所有信息均存储在个人设备，未进行共享或在线协作。",
+                "企业运用云服务进行大批量的图文信息存档，以便于实时获取。",
+                "企业运用云服务进行办公、设计、生产等数据汇聚、归类与备份。",
+                "企业运用云服务进行业务应用、关键设备系统托管和数据分析与处理，并开展协同办公、协同设计、协同生产等业务。",
+                "在L3基础上，企业通过云化服务实现客户关系管理（CRM）、供应链管理等外部环节数字化。",
+                "企业通过云化服务打通企业所有业务流程，并运用人工智能与机器学习优化提升各环节质量。"
+            ],
+            'cloud-usage': [
+                "企业所有信息均存储在个人设备，未进行共享或在线协作。",
+                "企业运用云服务进行大批量的图文信息存档，以便于实时获取。",
+                "企业运用云服务进行办公、设计、生产等数据汇聚、归类与备份。",
+                "企业运用云服务进行业务应用、关键设备系统托管和数据分析与处理，并开展协同办公、协同设计、协同生产等业务。",
+                "在L3基础上，企业通过云化服务实现客户关系管理（CRM）、供应链管理等外部环节数字化。",
+                "企业通过云化服务打通企业所有业务流程，并运用人工智能与机器学习优化提升各环节质量。"
+            ],
+            'data-capability': [
+                "企业生产过程中关键环节数据整合分布，尚未应用能力。",
+                "企业生产过程中关键环节数据均在本地产生和调用，能够以报表等方式对数据进行系统整理与信息。",
+                "企业能够实现包含生产过程在内的多个业务场景数据采集与存储，并基于信息系统和人工经验进行数据处理满足特定范围的数据使用需求。",
+                "企业建立企业级统一数据字典、信息模型标准、数据交换格式和规则，实现跨部门、跨系统的数据交换和使用，并开始构建数据模型算法，支持特定业务分析优化。",
+                "企业通过数据中心、数据中台、数据调等任一形式，进行企业内部数据的集成管理与开放共享，并积累形成数据模型库、算法库，开展单一业务深度分析或多项业务关联分析。",
+                "企业综合应用人工智能大模型、数字孪生等先进技术，针对复杂业务开展预测性分析实现数据驱动的自适应、自学习智能应用。"
+            ],
+            'security-capability': [
+                "企业尚未接入网络或应用局域网开展业务，基本没有部署防火墙、杀毒软件等基础网络安全防护措施，内部尚未形成网络安全管理规范。",
+                "企业已建成企业级网络，部署应用专业防火墙、杀毒软件，并制定明确的网络信息安全管理规范。",
+                "企业通过工业通信协议实现若干生产设备之间局部网络互联，初步具备隔离防护、访问控制、身份认证等基础工程安全防护功能。",
+                "企业网络能够满足跨部门的工业控制与数据集成需求，在工业主机及关键信息系统上安装工业防病毒软件和工业防火墙，定期开展信息安全风险评估、安全配置和行业管理等常态化安全管理。",
+                "企业网络可实现ITOT融合，满足企业内部以及产业链企业间的业务低延时协同需求，可实时获取并自动响应安全威胁情报，并通过数据模型动态研判信息安全态势。",
+                "企业建成分布式工业控制网络和基于软件定义网络（SDN）'敏捷网络'，实现多种网络的融合和网络资源的智能化配置，应用人工智能等新技术探索应用具备自学习、自优化功能的安全防护措施。"
+            ],
+            'product-design': [
+                "企业以传统手工方式绘制产品图纸与设计产品参数，以纸质文档方式管理产品相关的信息。",
+                "企业采用电子文档等方式初步开展产品设计数据的文档化管理，或在线上通过简单的文字、图形等开展协作。",
+                "基于计算机辅助开展产品设计，如使用计算机辅助设计（CAD）、电子设计自动化（EDA）等软件，并制定产品设计规范。",
+                "在L2的基础上，部署实施产品数据管理（PDM）/产品生命周期管理（PLM）类系统，实现产品数据集成和研发过程管理。",
+                "企业开始积累沉淀设计组件库或工艺知识库，能够进行产品功能、性能仿真分析，以模型为核心开展覆盖产品全生命周期的集成应用，实现覆盖产品生命周期关键环节的数据贯通和初步业务协同，打造基于行业特色的内部协同研发模式。",
+                "企业打造产品数字孪生，以高精度、高保真的虚拟实验替代传统实物验证过程，对包括产品研发全过程在内的全生命周期进行分析预测；或运用人工智能大模型技术开展创新式设计，能够实现跨区域、跨领域的网络化协同设计，自动生成设计方案。"
+            ],
+            'process-design': [
+                "企业以传统手工方式制作工艺流程，以纸质文档方式管理工艺参数相关的信息。",
+                "企业采用电子文档等方式初步开展工艺设计数据的文档化管理，或在线上通过简单的文字、图形等开展协作。",
+                "企业建立工艺文档和数据的管理机制，能够对工艺信息进行记录、查阅和执行，并使用计算机辅助工艺过程设计（CAPP）等软件开展工艺设计及优化。",
+                "企业能够熟练运用工艺设计工具，基于工艺设计、生产、检验等系统集成，实现工艺设计与制造协同。",
+                "企业能够构建工艺知识库和行业工艺包等，应用机理建模、过程模拟、知识图谱等技术，实现工艺设计快速迭代优化基于数字化模型实现制造工艺环节的仿真分析及迭代优化。",
+                "企业能够基于设计、工艺、生产、检验、运维等数据，应用工艺自动化、人工智能等技术，实现工序排布、工艺指令等自动生成和工艺设计动态优化，建立跨区域、跨平台的协同工艺设计。"
+            ],
+            'production-planning': [
+                "企业生产计划指挥高度依赖人工，主要生产批次主要由人工计算并下放纸质安排计划。",
+                "通过信息系统（或计算机）实现具有约束条件的主生产计划生产和物料需求计算。",
+                "企业应用MES系统等专业工业软件（包括云化软件）开展可视化、精益化生产管理域的生产参数监控，实现对车间级别的计划排序。",
+                "企业建设智能管理系统，主要产品车间生产计划均实现自动排序。",
+                "企业建设智能管理系统，应用复杂的优化、多目标规划、强化学习等技术，基于安全库存、生产过程数据等要素实现多目标排序优化。",
+                "全部车间生产计划实现自动排序，并将自动排序系统与采购、生产、销售等环节进行数据协同，实现异常情况自动预警和自动优化。"
+            ],
+            'production-operation': [
+                "企业生产设备操作高度依赖人工，关键生产作业环节未实现自动化。",
+                "企业开展关键生产工序自动化改造，实现部分生产作业环节的自动化。",
+                "企业规模化推动'哑'设备数字化改造升级，50%以上设备实现数据采集上传和互联互通，实现生产作业过程可视化。",
+                "企业基于设备数据采集和网络化连接实现不同生产工序之间的自动衔接和集中控制，打造全自动化产线或车间。",
+                "企业能够进行生产工艺和流程的自动切换，实现混线柔性生产，或能够实现设备租赁、产能共享等协同制造新模式。",
+                "企业集成机器人、高端机床或人机交互等智能装备，应用人工智能、数字孪生、工业元宇宙等技术，实现生产全过程自感知、自学习、自决策、自执行、自适应。"
+            ],
+            'quality-control': [
+                "企业通过人工取样、送检，或经验判断等方式开展质量管理和检测。",
+                "企业使用基本的质量管理系统软件，具备一定实时监控和自动化检测设备，覆盖了部分环节。",
+                "企业应用数字化技术和装备，实现关键环节的在线检测、分析、结果判定。",
+                "在L2的基础上，企业应用数字化技术，采集产品原料、生产过程、客户使用的质量信息等信息，实现产品质量全过程精准追溯。",
+                "在L3的基础上，构建在线智能检测系统，应用智能检测、物性表征分析、机器视觉识别、参数放行等技术，实现产品质量影响因素识别、缺陷分析或质量优化提升。",
+                "企业利用数字化手段实现质量控制与相关业务的协同，包括质量与规范同步、监测数据与设备信息同步、供应商质量信息同步、客户质量信息同步等，并应用机理分析、深度学习预测等技术，实现质量问题提前预测预防。"
+            ],
+            'warehouse-logistics': [
+                "企业通过纸质方式开展仓储物料记录盘点。",
+                "企业部分数据已实现电子化记录，实时库存监控已覆盖部分重点区域，并有相关信息化系统进行记录管理。",
+                "企业开展物料识别标识管理，基于统一条码、射频识别技术（RFID）、工业互联网标识解析等技术进行基本的数据采集和管理标识货物，实时库存监控基本覆盖重点区域。",
+                "在开展物料识别标识管理的基础上，企业应用制造执行系统（MES）或仓储管理系统（WMS），实现原材料、仓储品类产品流转的全程跟踪；或将罐区相关信息自动采集至罐区管理系统，在储罐状态异常时可自动报警，避免冒罐事故发生。",
+                "在L3的基础上，企业应用数字化技术，依据实际生产作业计划，应用自动化盘点、仓储策略优化、多形态流程筛选、库存实时调整等技术，实现物料和成品出入库、存储、挑选的智能化。",
+                "企业全面实现实时库存监控、动态调度和高度自动化作业，并依托运输管理系统（TMS），实现运输配送全程跟踪或异常预警，装载能力优化或配送路径优化。"
+            ],
+            'equipment-management': [
+                "通过人工观察、手动测试的方式开展设备管理，无定期设备维护计划。",
+                "应用人工手持仪器开展设备点巡检，制定设备维护计划，实现对设备设施的维护保养预警。",
+                "建立设备管理系统，实现设备点巡检、维护保养等状态的过程管理，并根据情况合理调整设备维护计划。",
+                "实现设备关键运行参数实时采集、依据关键运行参数等，实现设备综合效率（OEE）统计及故障报警。",
+                "建立设备故障知识库，与设备管理系统集成，并自动生成检修工单，实现设备故障分析和远程诊断，自动给出预测维护解决方案。",
+                "基于机器学习、神经网络等建立设备运行模型，实现自动驱动工艺优化和生产作业计划优化。"
+            ],
+            'safety-management': [
+                "通过人工巡查、手动测试的方式开展安全生产管理，仅开展线下的普适性安全知识培训。",
+                "利用数字技术对安全管理基础信息进行管理、实现风险分级动态管控和隐患排查闭环管理、对员工进行线上安全知识培训。",
+                "完成对现场危险源感知预警、实现事故事件报警的及时推送与快速处置。",
+                "对安全设备进行运行监测，建立了封闭管理、特殊作业管理、智能巡检、人员定位等专业化系统。",
+                "采用数字孪生技术应用于安全生产管理，建立基于知识图谱的安全生产数据平台，建立基于生产工艺的安全风险全过程管控，实现对安全设备设施的预测性维护。",
+                "采用人工智能技术，实现涉危作业的无人化作业；通过安全生产工艺机理模型，实现自动化过程优化控制，工艺生产报警优化。"
+            ],
+            'environmental-management': [
+                "尚未开展任何数字化应用，按需通过人工采集、手动记录。",
+                "使用简单的电子表格或数据库进行初步数据管理，环保数据可采集记录。",
+                "环保管理系统全面电子化并通过网络集中管理，主要区域实现实施监控。",
+                "实现从清洁生产到未端治理全过程环保数据采集、实时监控和报警。",
+                "实现环保监测数据和生产作业的集成分析，开展排放分析和预测预警。",
+                "实现环保、生产、设备等数据全面实时监控，应用数据分析模型追踪产品全生命周期精准碳排放，预测排放并提供反向生产优化方案。"
+            ],
+            'energy-management': [
+                "尚未开展任何数字化应用，按需通过人工采集、手动记录。",
+                "通过信息化手段，对主要能源产生、重点能源消耗点进行动态监测和计量。",
+                "可以对高耗能设备能耗实现数据实时统计和分析，并制定能耗评价指标。",
+                "有节能优化需求的设备开展实时计量，并根据能效评估结果，进行节能改造。",
+                "建立能源管理系统，对能源输送、存储、转化、使用等环节进行全面监控，实现能源数据与其他系统数据共享。",
+                "建立节能模型，实现能源精细、可视化管理和能源的动态预测和平衡，并指导生产。"
+            ],
+            'procurement-supply': [
+                "企业采用纸质文档进行采购、销售、仓储等的人工盘点，未使用数字化工具。",
+                "能够通过轻量化工具实现采购计划管理、过程管理和供应商管理。",
+                "建设供应链管理系统（SCM），融合数字化技术，实现供应链可视化监控。",
+                "在L2的基础上，集成数字化技术，实现库存信息与采购信息过滤，能够基于物料消耗情况及起采购需求，实现供应商综合评价、采购需求精准决策或采购方案动态优化。",
+                "在L3基础上，构建工业互联网等数字化平台，建立多级供应商管理体系，以库存和订单、采购、生产信息的打通支撑采购计划和生产计划自生成，并与供应商实现系统集成打通，开展供货计划协同。",
+                "在L4基础上，企业能够与上下游企业在产品设计、生产作业、质量管控、物流运输、绿色低碳等某个或多个领域开展深度协同，打造产业链供应链协同新模式；同时打造供应链智能调度、智能风险预测等应用，减少供应链前链风险与损失。"
+            ],
+            'marketing-management': [
+                "企业采用纸质化、经验化等方式在办公、财务、采购、人力等领域进行经营管理，未使用数字化工具。",
+                "企业已开展一些基本的信息技术应用，比如简单的电子表格或电话、邮件营销。",
+                "企业运用小程序等轻量化软件工具辅助开展基本营销、售后管理；对系统集成电子商务、直播带货等互联网营销模式；并通过信息系统实现基本的销售订单、销售过程和客户信息管理。",
+                "企业开始采用更专业的营销工具和软件，如CRM（客户关系管理）系统、集成数字化技术，实现挖掘分析客户信息、构建用户画像。",
+                "企业实现不同系统之间的数据互通，比如ERP（企业资源规划）与CRM系统的集成，支持更复杂的营销活动管理和数据分析，构建需求预测模型或制定精准销售计划。",
+                "企业能够利用高数数据分析、人工智能等技术进行预测分析、个性化营销，根据客户需求变化，动态调整设计采购、生产或物流等方案，并实现对未来市场供求趋势、影响因素或决策机制的精准分析、判断或预测。"
+            ],
+            'product-service': [
+                "企业单纯使用纸质形式进行产品服务，未使用数字化工具。",
+                "企业主要以电子表格等非纸质形式记录产品服务报告。",
+                "企业通过OA、ERP或销售系统等平台搭建表单流程进行信息记录，对服务受理、派工、服务记录填写、备件等流程进行管控。",
+                "企业搭建移动端连接服务，客户能够通过数字化终端实现提供货、质量管理、客户体验调查、满意度调查等的自动化、数字化。",
+                "依托客户关系管理系统（CRM），集成数字化技术，实现精细化管理或主动式客户服务，能够通过标识解析等方式实现产品追溯以及设计优化协同。",
+                "企业利用人工智能、大数据分析等来优化服务，实现用户和企业的深度交互，提供满足个性化需求的产品定制设计、柔性化生产或个性化服务以及预见性维护、远程诊断、设备估值、资产处置等增值服务。"
+            ],
+            'strategy-implementation': [
+                "对数字化未作了解，未考虑任何数字化转型目标或规划。",
+                "已经主动了解数字化相关内容，对数字化转型的意义有较为深刻的认识。",
+                "主动去数字化建设成效较好的同行业公司参观交流，学习数字化转型方案。",
+                "已经对数字化转型有了明确的目标，并制定了数字化转型规划及具体的实施计划。",
+                "已经基于规划着手开始进行单点或多点的数字化改造。",
+                "已基于战略规划开展业务模式和管理决策方式的变革实践并取得成效。"
+            ],
+            'management-mechanism': [
+                "尚无数字化管理制度且无设立计划。",
+                "建立数字化转型实施工作流程。",
+                "设立了数字化职能部门，赋予其足够的权限来推进相关工作。",
+                "建立信息系统建设及运营管理制度。",
+                "建立了数据资源管理制度。",
+                "明确数字化职能部门在企业战略中的定位和工作重点，建立与数字化融合的科研、业务、产品等方面的创新激励制度。"
+            ],
+            'talent-configuration': [
+                "未配备任何数字化人才。",
+                "配备专职/兼职的数字化人才。",
+                "建立了专门的数字化人才队伍。",
+                "有明确的数字化人才绩效及薪酬管理制度。",
+                "设立了首席数据官（CDO）。",
+                "为员工提供定期的数字化技能培训课程，帮助他们掌握最新的工具和技术。"
+            ],
+            'funding-investment': [
+                "企业近三年未进行数字化相关投入。",
+                "企业近三年平均数字化投入占营业收入比重（0-0.3%）。",
+                "企业近三年平均数字化投入占营业收入比重（0.3%-3%）。",
+                "企业近三年平均数字化投入占营业收入比重（3%-6%）。",
+                "企业近三年平均数字化投入占营业收入比重（6%-9%）。",
+                "企业近三年平均数字化投入占营业收入比重（9%-12%）。"
+            ],
+            'product-quality': [
+                "提升幅度≤0。",
+                "提升幅度（0, 1.2%）。",
+                "提升幅度[1.2%-2.4%]。",
+                "提升幅度[2.4%-3.6%]。",
+                "提升幅度[3.6%-4.8%]。",
+                "提升幅度≥4.8%。"
+            ],
+            'production-efficiency': [
+                "提升幅度≤0。",
+                "提升幅度（0, 6%）。",
+                "提升幅度[6%-12%]。",
+                "提升幅度[12%-18%]。",
+                "提升幅度[18%-24%]。",
+                "提升幅度≥24%。"
+            ],
+            'value-benefit': [
+                "降低幅度≤0。",
+                "降低幅度（0, 4%）。",
+                "降低幅度[4%-8%]。",
+                "降低幅度[8%-12%]。",
+                "降低幅度[12%-16%]。",
+                "降低幅度≥16%。"
+            ],
+            'green-low-carbon': [
+                "降低幅度≤0。",
+                "降低幅度（0, 4%）。",
+                "降低幅度[4%-8%]。",
+                "降低幅度[8%-12%]。",
+                "降低幅度[12%-16%]。",
+                "降低幅度≥16%。"
+            ],
+            'security-controllable': [
+                "安全可控比例=0%。",
+                "安全可控比例（0%-20%）。",
+                "安全可控比例[20%-40%]。",
+                "安全可控比例[40%-60%]。",
+                "安全可控比例[60%-80%]。",
+                "安全可控比例[80%-100%]。"
+            ]
         };
 
-        // 缓存DOM元素引用
-        const sliderCache = new Map();
-        const resultCache = new Map();
-        
-        // 初始化缓存
-        function initializeCache() {
-            // 缓存所有滑块元素
-            document.querySelectorAll('.form-range').forEach(slider => {
-                const id = slider.id;
-                sliderCache.set(id, {
-                    element: slider,
-                    valueDisplay: document.getElementById(id + '-value'),
-                    levelDisplay: document.getElementById(id + '-level'),
-                    guidelineDisplay: document.getElementById(id + '-guideline')
-                });
-            });
-            
-            // 缓存结果元素
-            const resultIds = [
-                'total-score', 'total-score-progress', 'grade',
-                'summary-digital-foundation', 'progress-digital-foundation',
-                'summary-digital-operation', 'progress-digital-operation',
-                'summary-digital-management', 'progress-digital-management',
-                'summary-digital-results', 'progress-digital-results',
-                'summary-bonus', 'progress-bonus'
-            ];
-            
-            resultIds.forEach(id => {
-                resultCache.set(id, document.getElementById(id));
-            });
-        }
-        
-        // 使用防抖优化评分计算
-        let calculateTimeout;
-        function debouncedCalculateScores() {
-            clearTimeout(calculateTimeout);
-            calculateTimeout = setTimeout(calculateScores, 100);
-        }
-        
         // 初始化所有滑块的值显示
-        function initializeSliders() {
-            sliderCache.forEach((cache, id) => {
-                const { element, valueDisplay, levelDisplay, guidelineDisplay } = cache;
-                
-                // 设置初始值
-                valueDisplay.textContent = element.value;
-                updateLevelDisplay(element.value, levelDisplay, guidelineDisplay, id);
-                
-                // 添加输入事件监听
-                element.addEventListener('input', function() {
-                    valueDisplay.textContent = this.value;
-                    updateLevelDisplay(this.value, levelDisplay, guidelineDisplay, id);
-                    debouncedCalculateScores(); // 使用防抖优化计算
-                });
+        document.querySelectorAll('.form-range').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id + '-value');
+            const levelDisplay = document.getElementById(slider.id + '-level');
+            const explanationElement = document.getElementById(slider.id + '-explanation');
+            const explanationText = document.getElementById(slider.id + '-explanation-text');
+            
+            // 设置初始值
+            valueDisplay.textContent = slider.value;
+            updateLevelDisplay(slider.value, levelDisplay, explanationElement, explanationText, slider.id);
+            
+            // 添加输入事件监听
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+                updateLevelDisplay(this.value, levelDisplay, explanationElement, explanationText, this.id);
+                calculateScores(); // 实时计算总分
             });
-        }
+        });
         
         // 为一级指标添加点击事件
-        function initializePrimaryIndicators() {
-            document.querySelectorAll('.primary-indicator').forEach(indicator => {
-                indicator.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const secondaryScores = document.getElementById(`secondary-${targetId}`);
-                    
-                    // 切换显示/隐藏二级指标得分
-                    if (secondaryScores.style.display === 'block') {
-                        secondaryScores.style.display = 'none';
-                    } else {
-                        // 隐藏所有其他二级指标得分
-                        document.querySelectorAll('.secondary-scores').forEach(scores => {
-                            scores.style.display = 'none';
-                        });
-                        // 显示当前二级指标得分
-                        secondaryScores.style.display = 'block';
-                    }
-                });
+        document.querySelectorAll('.primary-indicator').forEach(indicator => {
+            indicator.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const secondaryScores = document.getElementById(`secondary-${targetId}`);
+                
+                // 切换显示/隐藏二级指标得分
+                if (secondaryScores.style.display === 'block') {
+                    secondaryScores.style.display = 'none';
+                } else {
+                    // 隐藏所有其他二级指标得分
+                    document.querySelectorAll('.secondary-scores').forEach(scores => {
+                        scores.style.display = 'none';
+                    });
+                    // 显示当前二级指标得分
+                    secondaryScores.style.display = 'block';
+                }
             });
-        }
+        });
         
-        // 导出结果功能
-        function initializeExportResults() {
-            document.getElementById('export-results').addEventListener('click', function() {
-                // 创建CSV内容
-                let csvContent = "指标分类,指标名称,得分,等级\n";
-                
-                // 收集所有指标数据
-                document.querySelectorAll('.indicator-item').forEach(item => {
-                    const label = item.querySelector('.form-label').textContent;
-                    const value = item.querySelector('.slider-value').textContent;
-                    const level = item.querySelector('.level-name').textContent;
-                    
-                    // 提取指标分类
-                    let category = '';
-                    const subcategory = item.closest('.subcategory');
-                    if (subcategory) {
-                        category = subcategory.querySelector('h5').textContent;
-                    }
-                    
-                    csvContent += `"${category}","${label}","${value}","${level}"\n`;
-                });
-                
-                // 添加总分信息
-                csvContent += `"综合评价","总分","${resultCache.get('total-score').textContent}","${resultCache.get('grade').textContent}"\n`;
-                
-                // 创建下载链接
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('download', '制造业数字化转型评价结果.csv');
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-        }
-        
-        // 根据分数更新等级显示和评分说明
-        function updateLevelDisplay(score, levelElement, guidelineElement, indicatorId) {
+        // 根据分数更新等级显示和说明
+        function updateLevelDisplay(score, element, explanationElement, explanationText, sliderId) {
             const numScore = parseInt(score);
             let level, levelClass, levelIndex;
             
@@ -1949,14 +1715,13 @@
                 levelIndex = 5;
             }
             
-            // 更新等级显示
-            levelElement.className = "current-level " + levelClass;
-            levelElement.querySelector('.level-number').textContent = level.split(' ')[0];
-            levelElement.querySelector('.level-name').textContent = level.split(' ')[1];
+            element.textContent = level;
+            element.className = "current-level " + levelClass;
             
-            // 更新评分说明
-            if (guidelineElement && guidelines[indicatorId]) {
-                guidelineElement.textContent = guidelines[indicatorId][levelIndex];
+            // 更新等级说明
+            if (levelExplanations[sliderId] && levelExplanations[sliderId][levelIndex]) {
+                explanationText.textContent = levelExplanations[sliderId][levelIndex];
+                explanationElement.classList.add('show');
             }
         }
         
@@ -1964,44 +1729,44 @@
         function calculateScores() {
             // 数字化基础
             // 设备系统
-            const devicePopularization = parseInt(sliderCache.get('device-popularization').element.value) || 0;
-            const deviceNetworking = parseInt(sliderCache.get('device-networking').element.value) || 0;
-            const processDigitalization = parseInt(sliderCache.get('process-digitalization').element.value) || 0;
+            const devicePopularization = parseInt(document.getElementById('device-popularization').value) || 0;
+            const deviceNetworking = parseInt(document.getElementById('device-networking').value) || 0;
+            const processDigitalization = parseInt(document.getElementById('process-digitalization').value) || 0;
             const equipmentSystemScore = (devicePopularization * 0.35 + deviceNetworking * 0.25 + processDigitalization * 0.40);
             document.getElementById('secondary-equipment-system').textContent = equipmentSystemScore.toFixed(1);
             
             // 数据要素
-            const cloudUsage = parseInt(sliderCache.get('cloud-usage').element.value) || 0;
-            const dataCapability = parseInt(sliderCache.get('data-capability').element.value) || 0;
+            const cloudUsage = parseInt(document.getElementById('cloud-usage').value) || 0;
+            const dataCapability = parseInt(document.getElementById('data-capability').value) || 0;
             const dataElementScore = (cloudUsage * 0.35 + dataCapability * 0.65);
             document.getElementById('secondary-data-element').textContent = dataElementScore.toFixed(1);
             
             // 网络安全
-            const securityCapability = parseInt(sliderCache.get('security-capability').element.value) || 0;
+            const securityCapability = parseInt(document.getElementById('security-capability').value) || 0;
             const networkSecurityScore = securityCapability;
             document.getElementById('secondary-network-security').textContent = networkSecurityScore.toFixed(1);
             
             // 数字化基础总分
             const digitalFoundationScore = (equipmentSystemScore * 0.5 + dataElementScore * 0.3 + networkSecurityScore * 0.2);
-            resultCache.get('summary-digital-foundation').textContent = digitalFoundationScore.toFixed(1);
-            resultCache.get('progress-digital-foundation').style.width = digitalFoundationScore + '%';
+            document.getElementById('summary-digital-foundation').textContent = digitalFoundationScore.toFixed(1);
+            document.getElementById('progress-digital-foundation').style.width = digitalFoundationScore + '%';
             
             // 数字化生产经营
             // 研发设计
-            const productDesign = parseInt(sliderCache.get('product-design').element.value) || 0;
-            const processDesign = parseInt(sliderCache.get('process-design').element.value) || 0;
+            const productDesign = parseInt(document.getElementById('product-design').value) || 0;
+            const processDesign = parseInt(document.getElementById('process-design').value) || 0;
             const rdDesignScore = (productDesign * 0.5 + processDesign * 0.5);
             document.getElementById('secondary-rd-design').textContent = rdDesignScore.toFixed(1);
             
             // 生产管控
-            const productionPlanning = parseInt(sliderCache.get('production-planning').element.value) || 0;
-            const productionOperation = parseInt(sliderCache.get('production-operation').element.value) || 0;
-            const qualityControl = parseInt(sliderCache.get('quality-control').element.value) || 0;
-            const warehouseLogistics = parseInt(sliderCache.get('warehouse-logistics').element.value) || 0;
-            const equipmentManagement = parseInt(sliderCache.get('equipment-management').element.value) || 0;
-            const safetyManagement = parseInt(sliderCache.get('safety-management').element.value) || 0;
-            const environmentalManagement = parseInt(sliderCache.get('environmental-management').element.value) || 0;
-            const energyManagement = parseInt(sliderCache.get('energy-management').element.value) || 0;
+            const productionPlanning = parseInt(document.getElementById('production-planning').value) || 0;
+            const productionOperation = parseInt(document.getElementById('production-operation').value) || 0;
+            const qualityControl = parseInt(document.getElementById('quality-control').value) || 0;
+            const warehouseLogistics = parseInt(document.getElementById('warehouse-logistics').value) || 0;
+            const equipmentManagement = parseInt(document.getElementById('equipment-management').value) || 0;
+            const safetyManagement = parseInt(document.getElementById('safety-management').value) || 0;
+            const environmentalManagement = parseInt(document.getElementById('environmental-management').value) || 0;
+            const energyManagement = parseInt(document.getElementById('energy-management').value) || 0;
             const productionControlScore = (
                 productionPlanning * 0.10 + 
                 productionOperation * 0.30 + 
@@ -2015,17 +1780,17 @@
             document.getElementById('secondary-production-control').textContent = productionControlScore.toFixed(1);
             
             // 采购供应
-            const procurementSupply = parseInt(sliderCache.get('procurement-supply').element.value) || 0;
+            const procurementSupply = parseInt(document.getElementById('procurement-supply').value) || 0;
             const procurementScore = procurementSupply;
             document.getElementById('secondary-procurement').textContent = procurementScore.toFixed(1);
             
             // 营销管理
-            const marketingManagement = parseInt(sliderCache.get('marketing-management').element.value) || 0;
+            const marketingManagement = parseInt(document.getElementById('marketing-management').value) || 0;
             const marketingScore = marketingManagement;
             document.getElementById('secondary-marketing').textContent = marketingScore.toFixed(1);
             
             // 产品服务
-            const productService = parseInt(sliderCache.get('product-service').element.value) || 0;
+            const productService = parseInt(document.getElementById('product-service').value) || 0;
             const productServiceScore = productService;
             document.getElementById('secondary-product-service').textContent = productServiceScore.toFixed(1);
             
@@ -2037,46 +1802,77 @@
                 marketingScore * 0.10 + 
                 productServiceScore * 0.12
             );
-            resultCache.get('summary-digital-operation').textContent = digitalOperationScore.toFixed(1);
-            resultCache.get('progress-digital-operation').style.width = digitalOperationScore + '%';
+            document.getElementById('summary-digital-operation').textContent = digitalOperationScore.toFixed(1);
+            document.getElementById('progress-digital-operation').style.width = digitalOperationScore + '%';
             
             // 数字化管理
-            const digitalStrategy = parseInt(sliderCache.get('digital-strategy').element.value) || 0;
-            const managementMechanism = parseInt(sliderCache.get('management-mechanism').element.value) || 0;
-            const talentDevelopment = parseInt(sliderCache.get('talent-development').element.value) || 0;
-            const funding = parseInt(sliderCache.get('funding').element.value) || 0;
+            // 经营战略
+            const strategyImplementation = parseInt(document.getElementById('strategy-implementation').value) || 0;
+            const businessStrategyScore = strategyImplementation;
+            document.getElementById('secondary-business-strategy').textContent = businessStrategyScore.toFixed(1);
+            
+            // 管理机制
+            const managementMechanism = parseInt(document.getElementById('management-mechanism').value) || 0;
+            const managementMechanismScore = managementMechanism;
+            document.getElementById('secondary-management-mechanism').textContent = managementMechanismScore.toFixed(1);
+            
+            // 人才建设
+            const talentConfiguration = parseInt(document.getElementById('talent-configuration').value) || 0;
+            const talentDevelopmentScore = talentConfiguration;
+            document.getElementById('secondary-talent-development').textContent = talentDevelopmentScore.toFixed(1);
+            
+            // 资金投入
+            const fundingInvestment = parseInt(document.getElementById('funding-investment').value) || 0;
+            const fundingScore = fundingInvestment;
+            document.getElementById('secondary-funding').textContent = fundingScore.toFixed(1);
             
             // 数字化管理总分
             const digitalManagementScore = (
-                digitalStrategy * 0.15 + 
-                managementMechanism * 0.35 + 
-                talentDevelopment * 0.25 + 
-                funding * 0.25
+                businessStrategyScore * 0.15 + 
+                managementMechanismScore * 0.35 + 
+                talentDevelopmentScore * 0.25 + 
+                fundingScore * 0.25
             );
-            resultCache.get('summary-digital-management').textContent = digitalManagementScore.toFixed(1);
-            resultCache.get('progress-digital-management').style.width = digitalManagementScore + '%';
+            document.getElementById('summary-digital-management').textContent = digitalManagementScore.toFixed(1);
+            document.getElementById('progress-digital-management').style.width = digitalManagementScore + '%';
             
             // 数字化成效
-            const productQuality = parseInt(sliderCache.get('product-quality').element.value) || 0;
-            const productionEfficiency = parseInt(sliderCache.get('production-efficiency').element.value) || 0;
-            const valueBenefit = parseInt(sliderCache.get('value-benefit').element.value) || 0;
-            const greenLowCarbon = parseInt(sliderCache.get('green-low-carbon').element.value) || 0;
+            // 产品质量
+            const productQuality = parseInt(document.getElementById('product-quality').value) || 0;
+            const productQualityScore = productQuality;
+            document.getElementById('secondary-product-quality').textContent = productQualityScore.toFixed(1);
+            
+            // 生产效率
+            const productionEfficiency = parseInt(document.getElementById('production-efficiency').value) || 0;
+            const productionEfficiencyScore = productionEfficiency;
+            document.getElementById('secondary-production-efficiency').textContent = productionEfficiencyScore.toFixed(1);
+            
+            // 价值效益
+            const valueBenefit = parseInt(document.getElementById('value-benefit').value) || 0;
+            const valueBenefitScore = valueBenefit;
+            document.getElementById('secondary-value-benefit').textContent = valueBenefitScore.toFixed(1);
+            
+            // 绿色低碳
+            const greenLowCarbon = parseInt(document.getElementById('green-low-carbon').value) || 0;
+            const greenLowCarbonScore = greenLowCarbon;
+            document.getElementById('secondary-green-low-carbon').textContent = greenLowCarbonScore.toFixed(1);
             
             // 数字化成效总分
             const digitalResultsScore = (
-                productQuality * 0.25 + 
-                productionEfficiency * 0.30 + 
-                valueBenefit * 0.25 + 
-                greenLowCarbon * 0.20
+                productQualityScore * 0.25 + 
+                productionEfficiencyScore * 0.30 + 
+                valueBenefitScore * 0.25 + 
+                greenLowCarbonScore * 0.20
             );
-            resultCache.get('summary-digital-results').textContent = digitalResultsScore.toFixed(1);
-            resultCache.get('progress-digital-results').style.width = digitalResultsScore + '%';
+            document.getElementById('summary-digital-results').textContent = digitalResultsScore.toFixed(1);
+            document.getElementById('progress-digital-results').style.width = digitalResultsScore + '%';
             
             // 加分项
-            const securityControllable = parseInt(sliderCache.get('security-controllable').element.value) || 0;
+            const securityControllable = parseInt(document.getElementById('security-controllable').value) || 0;
             const bonusScore = securityControllable;
-            resultCache.get('summary-bonus').textContent = bonusScore.toFixed(1);
-            resultCache.get('progress-bonus').style.width = bonusScore + '%';
+            document.getElementById('secondary-security-controllable').textContent = bonusScore.toFixed(1);
+            document.getElementById('summary-bonus').textContent = bonusScore.toFixed(1);
+            document.getElementById('progress-bonus').style.width = bonusScore + '%';
             
             // 计算总分
             const totalScore = (
@@ -2086,8 +1882,8 @@
                 digitalResultsScore * 0.20 + 
                 bonusScore * 0.05
             );
-            resultCache.get('total-score').textContent = totalScore.toFixed(1);
-            resultCache.get('total-score-progress').style.width = (totalScore / 105 * 100) + '%';
+            document.getElementById('total-score').textContent = totalScore.toFixed(1);
+            document.getElementById('total-score-progress').style.width = (totalScore / 105 * 100) + '%';
             
             // 确定等级
             let grade = '';
@@ -2095,39 +1891,42 @@
             if (totalScore < 10) {
                 grade = 'L0 尚未实施';
                 gradeClass = 'level-0';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-secondary';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-secondary';
             } else if (totalScore < 20) {
                 grade = 'L1 起步建设';
                 gradeClass = 'level-1';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-primary';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-primary';
             } else if (totalScore < 40) {
                 grade = 'L2 单项应用';
                 gradeClass = 'level-2';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-success';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-success';
             } else if (totalScore < 60) {
                 grade = 'L3 综合集成';
                 gradeClass = 'level-3';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-warning';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-warning';
             } else if (totalScore < 80) {
                 grade = 'L4 协同优化';
                 gradeClass = 'level-4';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-orange';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-orange';
             } else {
                 grade = 'L5 智能引领';
                 gradeClass = 'level-5';
-                resultCache.get('total-score-progress').className = 'progress-bar bg-danger';
+                document.getElementById('total-score-progress').className = 'progress-bar bg-danger';
             }
-            resultCache.get('grade').textContent = grade;
-            resultCache.get('grade').className = 'total-grade ' + gradeClass;
+            document.getElementById('grade').textContent = grade;
+            document.getElementById('grade').className = 'total-grade ' + gradeClass;
         }
         
         // 重置所有分数
         function resetScores() {
-            sliderCache.forEach((cache, id) => {
-                const { element, valueDisplay, levelDisplay, guidelineDisplay } = cache;
-                element.value = 0;
+            document.querySelectorAll('.form-range').forEach(slider => {
+                slider.value = 0;
+                const valueDisplay = document.getElementById(slider.id + '-value');
+                const levelDisplay = document.getElementById(slider.id + '-level');
+                const explanationElement = document.getElementById(slider.id + '-explanation');
+                const explanationText = document.getElementById(slider.id + '-explanation-text');
                 valueDisplay.textContent = '0';
-                updateLevelDisplay(0, levelDisplay, guidelineDisplay, id);
+                updateLevelDisplay(0, levelDisplay, explanationElement, explanationText, slider.id);
             });
             
             // 隐藏所有二级指标得分
@@ -2138,14 +1937,84 @@
             calculateScores();
         }
         
-        // 页面加载时初始化
-        window.onload = function() {
-            initializeCache();
-            initializeSliders();
-            initializePrimaryIndicators();
-            initializeExportResults();
-            calculateScores();
-        };
+        // 导出PDF功能
+        document.getElementById('export-pdf').addEventListener('click', function() {
+            // 创建PDF实例
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // 设置标题
+            doc.setFontSize(20);
+            doc.setTextColor(30, 136, 229);
+            doc.text('制造业数字化转型评价报告', 105, 20, { align: 'center' });
+            
+            // 添加日期
+            const today = new Date();
+            const dateStr = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日';
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text('评估日期: ' + dateStr, 105, 30, { align: 'center' });
+            
+            // 添加总分和等级
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('综合评价结果', 20, 50);
+            doc.setFontSize(24);
+            doc.setTextColor(30, 136, 229);
+            doc.text('总分: ' + document.getElementById('total-score').textContent, 20, 65);
+            doc.setFontSize(18);
+            doc.text('等级: ' + document.getElementById('grade').textContent, 20, 80);
+            
+            // 添加一级指标得分
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('一级指标得分', 20, 100);
+            
+            let yPosition = 115;
+            const indicators = [
+                { name: '数字化基础', score: document.getElementById('summary-digital-foundation').textContent },
+                { name: '数字化生产经营', score: document.getElementById('summary-digital-operation').textContent },
+                { name: '数字化管理', score: document.getElementById('summary-digital-management').textContent },
+                { name: '数字化成效', score: document.getElementById('summary-digital-results').textContent },
+                { name: '加分项', score: document.getElementById('summary-bonus').textContent }
+            ];
+            
+            indicators.forEach(indicator => {
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                doc.text(indicator.name + ': ' + indicator.score + '分', 20, yPosition);
+                yPosition += 10;
+            });
+            
+            // 添加等级说明
+            yPosition += 10;
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('等级说明', 20, yPosition);
+            
+            yPosition += 15;
+            const levelDescriptions = [
+                'L0 尚未实施 [0-10): 企业尚未开展数字化转型',
+                'L1 起步建设 [10-20): 企业开始对数字化转型进行规划',
+                'L2 单项应用 [20-40): 企业实现单一业务环节的数字化转型',
+                'L3 综合集成 [40-60): 企业实现跨业务环节的数据共享',
+                'L4 协同优化 [60-80): 企业强化全流程数据贯通',
+                'L5 智能引领 [80-105]: 企业实现全链条全业务全环节的优化和创新'
+            ];
+            
+            levelDescriptions.forEach(desc => {
+                doc.setFontSize(10);
+                doc.setTextColor(80, 80, 80);
+                doc.text(desc, 20, yPosition);
+                yPosition += 8;
+            });
+            
+            // 保存PDF
+            doc.save('制造业数字化转型评价报告_' + dateStr + '.pdf');
+        });
+        
+        // 页面加载时自动计算一次
+        window.onload = calculateScores;
     </script>
 </body>
 </html>
