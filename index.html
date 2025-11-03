@@ -281,6 +281,53 @@
             padding: 10px 0;
         }
         
+        .checkbox-container {
+            padding: 10px 0;
+        }
+        
+        .form-check {
+            padding: 8px 0;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .form-check:hover {
+            background-color: rgba(100, 181, 246, 0.05);
+            padding-left: 10px;
+        }
+        
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--sky-blue);
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--sky-blue);
+            border-color: var(--sky-blue);
+        }
+        
+        .form-check-input:checked::before {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .form-check-label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .form-check-label:hover {
+            color: var(--sky-blue);
+        }
+        
         .form-range {
             width: 100%;
             height: 10px;
@@ -478,6 +525,119 @@
             top: 10%;
             right: 5%;
             font-size: 2rem;
+            color: white;
+            animation: fly 20s linear infinite;
+        }
+        
+        /* 卡片样式 */
+        .checkbox-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .checkbox-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-color: var(--sky-blue);
+        }
+        
+        .checkbox-card-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .checkbox-card-label {
+            display: block;
+            padding: 15px 20px;
+            cursor: pointer;
+            margin: 0;
+            position: relative;
+        }
+        
+        .checkbox-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .checkbox-card-title {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+            margin-right: 15px;
+            line-height: 1.4;
+        }
+        
+        .checkbox-card-score {
+            font-weight: bold;
+            color: var(--sky-blue);
+            background: rgba(30, 136, 229, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(30, 136, 229, 0.2);
+            white-space: nowrap;
+        }
+        
+        .checkbox-card-input:checked + .checkbox-card-label {
+            background: linear-gradient(135deg, rgba(30, 136, 229, 0.1), rgba(38, 198, 218, 0.1));
+            border-color: var(--sky-blue);
+        }
+        
+        .checkbox-card-input:checked + .checkbox-card-label::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--sky-blue), var(--accent-teal));
+        }
+        
+        .checkbox-card-input:checked + .checkbox-card-label .checkbox-card-title {
+            color: var(--sky-dark);
+            font-weight: 700;
+        }
+        
+        .checkbox-card-input:checked + .checkbox-card-label .checkbox-card-score {
+            background: var(--sky-blue);
+            color: white;
+            border-color: var(--sky-blue);
+        }
+        
+        .checkbox-card-label::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--sky-blue), var(--accent-teal));
+            transition: width 0.3s ease;
+        }
+        
+        .checkbox-card-label:hover::before {
+            width: 4px;
+        }
+        
+        .checkbox-card-label:hover .checkbox-card-title {
+            color: var(--sky-blue);
+        }
+        
+        .checkbox-card-label:hover .checkbox-card-score {
+            background: rgba(30, 136, 229, 0.2);
+            border-color: var(--sky-blue);
+        }
             color: white;
             animation: fly 20s linear infinite;
         }
@@ -1020,18 +1180,67 @@
                                         
                                         <div class="indicator-item">
                                             <label class="form-label fw-bold">数字化管理机制情况 (100%)</label>
-                                            <div class="slider-container">
-                                                <input type="range" class="form-range" min="0" max="100" id="management-mechanism">
+                                            <div class="checkbox-container">
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="0" id="management-mechanism-1">
+                                                    <label class="checkbox-card-label" for="management-mechanism-1">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">尚无数字化管理制度且无设立计划</div>
+                                                            <div class="checkbox-card-score">0分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="15" id="management-mechanism-2">
+                                                    <label class="checkbox-card-label" for="management-mechanism-2">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">建立数字化转型实施工作流程</div>
+                                                            <div class="checkbox-card-score">15分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="30" id="management-mechanism-3">
+                                                    <label class="checkbox-card-label" for="management-mechanism-3">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">设立了数字化职能部门，赋予其足够的权限来推进相关工作</div>
+                                                            <div class="checkbox-card-score">30分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="20" id="management-mechanism-4">
+                                                    <label class="checkbox-card-label" for="management-mechanism-4">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">建立信息系统建设及运营管理制度</div>
+                                                            <div class="checkbox-card-score">20分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="20" id="management-mechanism-5">
+                                                    <label class="checkbox-card-label" for="management-mechanism-5">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">建立了数据资源管理制度</div>
+                                                            <div class="checkbox-card-score">20分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="15" id="management-mechanism-6">
+                                                    <label class="checkbox-card-label" for="management-mechanism-6">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">明确数字化职能部门在企业战略中的定位和工作重点，建立与数字化融合的科研、业务、产品等方面的创新激励制度</div>
+                                                            <div class="checkbox-card-score">15分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
                                                 <div class="slider-value" id="management-mechanism-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化管理机制的建立和完善情况
+                                                企业数字化管理机制的建立和完善情况（可多选，分值累加）
                                             </div>
-                                            <div class="current-level level-0" id="management-mechanism-level">L0 尚未实施</div>
-                                            <div class="level-explanation" id="management-mechanism-explanation">
-                                                <div class="level-explanation-title">当前等级说明：</div>
-                                                <div id="management-mechanism-explanation-text">尚无数字化管理制度且无设立计划。</div>
-                                            </div>
+                                            <div class="current-level level-0" id="management-mechanism-level">当前总分：0分</div>
                                         </div>
                                         
                                         <div class="subcategory">
@@ -1040,18 +1249,67 @@
                                         
                                         <div class="indicator-item">
                                             <label class="form-label fw-bold">数字化人才配置情况 (100%)</label>
-                                            <div class="slider-container">
-                                                <input type="range" class="form-range" min="0" max="100" id="talent-configuration">
+                                            <div class="checkbox-container">
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="0" id="talent-configuration-1">
+                                                    <label class="checkbox-card-label" for="talent-configuration-1">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">尚未配备任何数字化人才</div>
+                                                            <div class="checkbox-card-score">0分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="15" id="talent-configuration-2">
+                                                    <label class="checkbox-card-label" for="talent-configuration-2">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">配备专职/兼职的数字化人才</div>
+                                                            <div class="checkbox-card-score">15分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="30" id="talent-configuration-3">
+                                                    <label class="checkbox-card-label" for="talent-configuration-3">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">建立了专门的数字化人才队伍</div>
+                                                            <div class="checkbox-card-score">30分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="20" id="talent-configuration-4">
+                                                    <label class="checkbox-card-label" for="talent-configuration-4">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">有明确的数字化人才绩效及薪酬管理制度</div>
+                                                            <div class="checkbox-card-score">20分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="15" id="talent-configuration-5">
+                                                    <label class="checkbox-card-label" for="talent-configuration-5">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">设立了首席数据官（CDO）</div>
+                                                            <div class="checkbox-card-score">15分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox-card mb-3">
+                                                    <input class="checkbox-card-input" type="checkbox" value="20" id="talent-configuration-6">
+                                                    <label class="checkbox-card-label" for="talent-configuration-6">
+                                                        <div class="checkbox-card-content">
+                                                            <div class="checkbox-card-title">为员工提供定期的数字化技能培训课程，帮助他们掌握最新的工具和技术</div>
+                                                            <div class="checkbox-card-score">20分</div>
+                                                        </div>
+                                                    </label>
+                                                </div>
                                                 <div class="slider-value" id="talent-configuration-value">0</div>
                                             </div>
                                             <div class="indicator-description">
-                                                企业数字化人才的配置和培养情况
+                                                企业数字化人才的配置和培养情况（可多选，分值累加）
                                             </div>
-                                            <div class="current-level level-0" id="talent-configuration-level">L0 尚未实施</div>
-                                            <div class="level-explanation" id="talent-configuration-explanation">
-                                                <div class="level-explanation-title">当前等级说明：</div>
-                                                <div id="talent-configuration-explanation-text">未配备任何数字化人才。</div>
-                                            </div>
+                                            <div class="current-level level-0" id="talent-configuration-level">当前总分：0分</div>
                                         </div>
                                         
                                         <div class="subcategory">
@@ -1653,6 +1911,7 @@
             const explanationText = document.getElementById(slider.id + '-explanation-text');
             
             // 设置初始值
+            slider.value=0;
             valueDisplay.textContent = slider.value;
             updateLevelDisplay(slider.value, levelDisplay, explanationElement, explanationText, slider.id);
             
@@ -1663,6 +1922,51 @@
                 calculateScores(); // 实时计算总分
             });
         });
+
+        // 初始化多选框的事件监听
+        document.querySelectorAll('#management input[type="checkbox"][id^="management-mechanism-"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateManagementMechanismScore();
+                calculateScores();
+            });
+        });
+
+        document.querySelectorAll('#management input[type="checkbox"][id^="talent-configuration-"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateTalentConfigurationScore();
+                calculateScores();
+            });
+        });
+
+        // 更新数字化管理机制情况得分
+        function updateManagementMechanismScore() {
+            const checkboxes = document.querySelectorAll('#management input[type="checkbox"][id^="management-mechanism-"]');
+            let totalScore = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalScore += parseInt(checkbox.value);
+                }
+            });
+            
+            document.getElementById('management-mechanism-value').textContent = totalScore;
+            document.getElementById('management-mechanism-level').textContent = '当前总分：' + totalScore + '分';
+        }
+
+        // 更新数字化人才配置情况得分
+        function updateTalentConfigurationScore() {
+            const checkboxes = document.querySelectorAll('#management input[type="checkbox"][id^="talent-configuration-"]');
+            let totalScore = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalScore += parseInt(checkbox.value);
+                }
+            });
+            
+            document.getElementById('talent-configuration-value').textContent = totalScore;
+            document.getElementById('talent-configuration-level').textContent = '当前总分：' + totalScore + '分';
+        }
         
         // 为一级指标添加点击事件
         document.querySelectorAll('.primary-indicator').forEach(indicator => {
@@ -1812,12 +2116,12 @@
             document.getElementById('secondary-business-strategy').textContent = businessStrategyScore.toFixed(1);
             
             // 管理机制
-            const managementMechanism = parseInt(document.getElementById('management-mechanism').value) || 0;
+            const managementMechanism = parseInt(document.getElementById('management-mechanism-value').textContent) || 0;
             const managementMechanismScore = managementMechanism;
             document.getElementById('secondary-management-mechanism').textContent = managementMechanismScore.toFixed(1);
             
             // 人才建设
-            const talentConfiguration = parseInt(document.getElementById('talent-configuration').value) || 0;
+            const talentConfiguration = parseInt(document.getElementById('talent-configuration-value').textContent) || 0;
             const talentDevelopmentScore = talentConfiguration;
             document.getElementById('secondary-talent-development').textContent = talentDevelopmentScore.toFixed(1);
             
@@ -1919,6 +2223,7 @@
         
         // 重置所有分数
         function resetScores() {
+            // 重置滑块
             document.querySelectorAll('.form-range').forEach(slider => {
                 slider.value = 0;
                 const valueDisplay = document.getElementById(slider.id + '-value');
@@ -1928,6 +2233,18 @@
                 valueDisplay.textContent = '0';
                 updateLevelDisplay(0, levelDisplay, explanationElement, explanationText, slider.id);
             });
+            
+            // 重置多选框
+            document.querySelectorAll('#management input[type="checkbox"][id^="management-mechanism-"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.querySelectorAll('#management input[type="checkbox"][id^="talent-configuration-"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // 重置多选框的显示值
+            updateManagementMechanismScore();
+            updateTalentConfigurationScore();
             
             // 隐藏所有二级指标得分
             document.querySelectorAll('.secondary-scores').forEach(scores => {
@@ -2014,7 +2331,12 @@
         });
         
         // 页面加载时自动计算一次
-        window.onload = calculateScores;
+        window.onload = function() {
+            // 初始化多选框的得分显示
+            updateManagementMechanismScore();
+            updateTalentConfigurationScore();
+            calculateScores();
+        };
     </script>
 </body>
 </html>
